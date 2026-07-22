@@ -1,169 +1,178 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Check, Sparkles, ShieldCheck, Film, Share2, Box } from 'lucide-react';
+import { Check, Sparkles, Film, Share2, Box, ArrowRight } from 'lucide-react';
 
 export const Packages: React.FC = () => {
-  const [activeCategory, setActiveCategory] = useState<'production' | 'full' | 'tech'>('production');
+  const [activeCategory, setActiveCategory] = useState<'filming' | 'social' | 'web'>('filming');
 
   const categories = [
-    { id: 'production', label: 'Filming & Post-Production Only', icon: Film },
-    { id: 'full', label: 'Full Retainer & Social Management', icon: Share2 },
-    { id: 'tech', label: 'Web, 3D & Tech Automations', icon: Box },
+    { id: 'filming', name: 'Filming & Post-Production Only', icon: Film },
+    { id: 'social', name: 'Full Retainer & Social Management', icon: Share2 },
+    { id: 'web', name: 'Web, 3D & Tech Automations', icon: Box },
   ];
 
-  const packagesData = {
-    production: [
+  const packageData = {
+    filming: [
       {
-        name: 'Post-Production Core',
-        tagline: 'Ideal for brands providing raw footage needing master editing and sound design.',
-        price: '2,200',
-        badge: 'Editing Suite',
+        name: 'Starter Filming Retainer',
+        price: '$2,200',
+        period: '/month',
+        tag: 'On-Location Shooting',
+        desc: 'Dedicated monthly 4K filming day with cinematic visual editing and master sound design.',
         features: [
-          '12 High-Impact Edited Short-Form Videos / Reels',
-          'Master Sound Design, Color Grading & Hook Graphics',
-          'Script & Framing Guidance for Internal Shoots',
-          'Multi-Platform Delivery (IG Reels, TikTok, YouTube Shorts)',
-          'Graphic Design Asset Add-ons Available',
+          '1 Full Day On-Location Shoot (Tampa Bay)',
+          '8 High-Impact Edited Video Reels',
+          'Professional Audio & Lighting Setup',
+          'Basic Color Grading & Motion Titles',
+          'Full Raw Footage Drive Access',
         ],
-        popular: false,
+        highlight: false,
       },
       {
-        name: 'Filming & Edit Engine',
-        tagline: 'Our premier production tier pairing cinematic filming with high-volume editing.',
-        price: '4,500',
-        badge: 'Most Popular',
+        name: 'Growth Media Retainer',
+        price: '$4,500',
+        period: '/month',
+        tag: 'Most Popular Choice',
+        desc: 'Bi-weekly filming sessions with high-volume short-form editing and studio photography.',
         features: [
-          'On-Location Cinematic Shoot (Free within 3h of Tampa Bay)',
-          '24 Short-Form Videos + Commercial Cut',
-          'Lifestyle, People & Studio Product Photography',
-          '3D Modeling & Product Render Integration',
-          'Graphic Design Package for Campaign Collateral',
-          'Raw & Edited File Delivery with Commercial License',
+          '2 Full Days On-Location Shoot / Month',
+          '18 High-Impact Edited Video Reels',
+          'Studio Product Photography Session',
+          'Cinematic Color Grading & Sound Master',
+          'Dedicated Content Calendar Planning',
+          'Priority Turnaround & Revision Support',
         ],
-        popular: true,
+        highlight: true,
       },
       {
-        name: 'Commercial Production Takeover',
-        tagline: 'Multi-day filming, studio product shoots, 3D modeling, and unlimited edits.',
-        price: '8,500',
-        badge: 'Full Production Suite',
+        name: 'Enterprise Cinema Suite',
+        price: '$8,500',
+        period: '/month',
+        tag: 'Full Creative Unit',
+        desc: 'Weekly filming sessions, high-volume multi-platform cuts, and lead editor assignment.',
         features: [
-          'Multi-Day On-Location Filming & Studio Product Shoots',
-          'Unlimited Post-Production & Color Grading Suite',
-          'Full 3D Product Modeling & Interactive Renders',
-          'Complete Brand Graphic Design Package & Banners',
-          'Priority Expedited Turnaround & Raw Footage Archive',
-          'Direct Access to Founders & Directors',
+          '4 Days On-Location Shoot / Month',
+          '36 High-Impact Video Assets / Reels',
+          'Full Commercial Photography Suite',
+          'Dedicated Lead Editor & Director',
+          'Custom 3D Product Motion Assets',
+          'Unlimited Revisions & Expedited Output',
         ],
-        popular: false,
-      },
-    ],
-    full: [
-      {
-        name: 'Starter Retainer',
-        tagline: 'High-quality edited content paired with intentional social calendar management.',
-        price: '3,200',
-        badge: 'Social & Edit',
-        features: [
-          '12 High-Impact Edited Reels & Videos',
-          'Intentional Social Calendar Scheduling & Publishing',
-          'Community Voice Engagement & DM Management',
-          'Monthly Performance & Growth Review',
-          'Brand Graphic Design Templates',
-        ],
-        popular: false,
-      },
-      {
-        name: 'Scale Growth Retainer',
-        tagline: 'Complete media coverage: Filming, 3D assets, Editing, and Social Strategy.',
-        price: '6,200',
-        badge: 'Flagship Retainer',
-        features: [
-          'On-Location Filming (3h Tampa Bay Radius / Remote)',
-          '24 Short-Form Videos + Commercial Cuts',
-          'Ad Creative Production & Strategy Suite',
-          'Full Social Calendar Scheduling & Community Voice',
-          'Talent Sourcing & Training Advisory (In-House Employee)',
-          'Graphic Design & Marketing Collateral Suite',
-        ],
-        popular: true,
-      },
-      {
-        name: 'Enterprise Media Takeover',
-        tagline: 'Full media department replacement with custom tech setup and talent sourcing.',
-        price: '11,500',
-        badge: 'Executive Retainer',
-        features: [
-          'Unlimited Filming, 3D Modeling & Post-Production',
-          'Full Social Media Takeover & Community Management',
-          'In-House SMM / Editor Recruiting & Training Setup',
-          'Custom Web Experience & Smart Automation Engine',
-          'Event Marketing Coverage & Specialist Network',
-          'Executive Board-Level Strategy & Advisory',
-        ],
-        popular: false,
+        highlight: false,
       },
     ],
-    tech: [
+    social: [
       {
-        name: 'Modern Web Experience',
-        tagline: 'High-speed bespoke web build tailored to reflect your brand identity.',
-        price: '3,500',
-        badge: 'Web Build',
+        name: 'Core Retainer & Community',
+        price: '$3,200',
+        period: '/month',
+        tag: 'Intentional Engagement',
+        desc: 'Filming, editing, and intentional social media management focused on genuine community building.',
         features: [
-          'Custom Responsive Web Design & Development',
-          'High-Speed Asset Optimization & Fast Load Times',
-          'SEO & Open-Graph Social Share Setup',
-          'Contact & Lead Capture Form Integration',
-          'Cost-Effective Modern Tooling (No Overpriced Software)',
+          '1 Filming Session + 10 Edited Reels',
+          'Intentional Content Planning & Posting',
+          'Audience Comment & DM Engagement',
+          'Graphic Design & Story Templates',
+          'Monthly Performance Analytics',
         ],
-        popular: false,
+        highlight: false,
       },
       {
-        name: 'Interactive 3D & Automation Suite',
-        tagline: 'Custom website featuring 3D model renders and smart workflow pipelines.',
-        price: '6,800',
-        badge: 'Most Popular',
+        name: 'Full Growth Retainer',
+        price: '$6,800',
+        period: '/month',
+        tag: 'Complete Agency Solution',
+        desc: 'Bi-weekly filming, full social media management, graphic design, and talent sourcing consultation.',
         features: [
-          'Interactive 3D Model Canvas & Product Render Integration',
-          'Custom Interactive Scope / Calculator Widget Build',
-          'Smart Lead & Workflow Automation Pipelines',
-          'Brand Graphic Design & Custom Iconography Kit',
-          'CRM, Email Marketing & Analytics Integration',
-          'Ongoing Tech Support & Maintenance Option',
+          '2 Filming Sessions + 20 Edited Reels',
+          'Full Multi-Platform Social Management',
+          'High-Converting Graphic Design Suite',
+          'Ad Creative Strategy & Testing',
+          'In-House SMM Recruiting & Training',
+          'Dedicated Brand Director Oversight',
         ],
-        popular: true,
+        highlight: true,
       },
       {
-        name: 'Custom Digital Architecture',
-        tagline: 'Full web portal, 3D asset pipeline, and automated operational ecosystem.',
-        price: '12,000+',
-        badge: 'Custom Architecture',
+        name: 'Executive Scale Retainer',
+        price: '$11,500',
+        period: '/month',
+        tag: 'Dominance Package',
+        desc: 'Weekly filming, high-volume content engine, dedicated social management, and talent advisory.',
         features: [
-          'Full Digital Web Ecosystem & Custom Portals',
-          'Multi-Asset 3D Render Pipelines & Canvas Shaders',
-          'Automated Internal Business Operations Setup',
-          'Employee & AI Operational Flow Pipelines',
-          'Dedicated Tech Lead & Priority SLAs',
-          'Turnkey Handoff & Team Training Session',
+          '4 Filming Sessions + 40 Edited Reels',
+          'Complete Omnichannel Social Dominance',
+          'Custom 3D Renders & Graphic Design',
+          'Ad Campaign Management & Creative',
+          'Dedicated In-House SMM Recruitment',
+          'Executive Strategy Sessions & Reporting',
         ],
-        popular: false,
+        highlight: false,
+      },
+    ],
+    web: [
+      {
+        name: 'High-Speed Web Experience',
+        price: '$3,500',
+        period: ' one-time',
+        tag: 'Custom Web Build',
+        desc: 'Bespoke React 18 + Vite landing page with glassmorphism design, fast speeds, and contact wizard.',
+        features: [
+          'Custom React + Tailwind Web App',
+          '99/100 Core Web Vitals Performance',
+          'Custom Scope & Quote Calculator',
+          'Full Mobile Responsiveness',
+          'SEO & Schema.org Graph Integration',
+        ],
+        highlight: false,
+      },
+      {
+        name: '3D Web & Automation Engine',
+        price: '$6,500',
+        period: ' one-time',
+        tag: '3D Renders & Tech',
+        desc: 'Interactive 3D web modeling, custom WebGL canvas, lead intake calculator, and workflow automations.',
+        features: [
+          'Interactive 3D Model Integrations',
+          'WebGL Liquid / Particle Canvas',
+          'Interactive Scope & Estimate Wizard',
+          'Automated Lead Intake & Email Pipeline',
+          'Dedicated Technical SEO & GEO Setup',
+          '1-Year Hosting & Maintenance Included',
+        ],
+        highlight: true,
+      },
+      {
+        name: 'Enterprise Web & Media Suite',
+        price: '$12,000+',
+        period: ' custom',
+        tag: 'Full Platform & Media',
+        desc: 'Complete digital transformation pairing custom 3D web platform with video production suite.',
+        features: [
+          'Bespoke Enterprise Web Platform Build',
+          'Custom 3D Product Motion Renders',
+          'Commercial Video Shoot & Web Reels',
+          'Automated CRM & Intake Integrations',
+          'Dedicated Technical Support & SLA',
+          'Full Source Code & Repository Handover',
+        ],
+        highlight: false,
       },
     ],
   };
 
   return (
-    <section id="packages" className="py-28 px-6 relative z-10">
+    <section id="packages" className="py-28 px-6 relative z-10 bg-[#FFF5F8]/80">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="text-center max-w-3xl mx-auto mb-14">
+        <div className="text-center max-w-3xl mx-auto mb-16">
           <motion.span
             initial={{ opacity: 0, y: 15 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-xs font-bold uppercase tracking-widest text-[#FFB6D9] mb-3 block"
+            className="text-xs font-black uppercase tracking-widest text-[#D83685] mb-3 block"
           >
-            Transparent Investment
+            Transparent Investment Tiers
           </motion.span>
 
           <motion.h2
@@ -171,122 +180,103 @@ export const Packages: React.FC = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className="text-4xl sm:text-5xl md:text-6xl font-extrabold mb-6"
+            className="text-4xl sm:text-5xl md:text-6xl font-black mb-6 text-[#1A1626]"
           >
-            Flexible Service <br />
-            <span className="gradient-text">Packages & Retainers</span>
+            Tailored Retainers & <br />
+            <span className="gradient-text">Production Packages</span>
           </motion.h2>
 
-          <p className="text-gray-300 text-base sm:text-lg mb-10">
-            Choose between Filming & Production Only, Full Social Management, or Custom 3D Web & Tech Solutions.
-          </p>
-
-          {/* Category Tabs */}
-          <div className="flex flex-wrap justify-center gap-3 glass-card p-2 rounded-full border border-white/10 max-w-2xl mx-auto">
+          {/* Category Tabs Switcher */}
+          <div className="flex flex-wrap justify-center gap-3 mt-8 p-2 rounded-full glass-card border border-[#FFB6D9]/50 shadow-md">
             {categories.map((cat) => (
               <button
                 key={cat.id}
                 onClick={() => setActiveCategory(cat.id as any)}
-                className={`px-5 py-3 rounded-full text-xs font-bold transition-all flex items-center gap-2 ${
+                className={`px-6 py-3 rounded-full text-xs font-black transition-all flex items-center gap-2 cursor-pointer ${
                   activeCategory === cat.id
-                    ? 'bg-gradient-to-r from-[#FFB6D9] to-[#E5D4FF] text-[#0D0B14] shadow-lg scale-105'
-                    : 'text-gray-300 hover:text-white'
+                    ? 'bg-gradient-to-r from-[#FF94C7] via-[#D4B8FF] to-[#99FFE0] text-[#1A1626] shadow-lg scale-105'
+                    : 'text-[#4A4259] hover:text-[#1A1626]'
                 }`}
               >
                 <cat.icon className="w-4 h-4" />
-                <span>{cat.label}</span>
+                <span>{cat.name}</span>
               </button>
             ))}
           </div>
         </div>
 
-        {/* Pricing Cards Grid */}
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={activeCategory}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.3 }}
-            className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch"
-          >
-            {packagesData[activeCategory].map((tier, index) => (
-              <div
-                key={index}
-                className={`glass-card rounded-3xl p-8 border flex flex-col justify-between relative transition-all duration-300 ${
-                  tier.popular
-                    ? 'border-[#FFB6D9] bg-[#1A142D]/80 shadow-2xl shadow-[#FFB6D9]/20 lg:-translate-y-2'
-                    : 'border-white/10 hover:border-white/25'
+        {/* Package Cards Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <AnimatePresence mode="wait">
+            {packageData[activeCategory].map((pkg, index) => (
+              <motion.div
+                key={pkg.name}
+                initial={{ opacity: 0, y: 25 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -25 }}
+                transition={{ duration: 0.3, delay: index * 0.1 }}
+                className={`glass-card glass-card-hover rounded-3xl p-8 border flex flex-col justify-between relative overflow-hidden ${
+                  pkg.highlight
+                    ? 'border-[#D83685] shadow-2xl scale-105 bg-white/95'
+                    : 'border-[#FFB6D9]/50 shadow-xl'
                 }`}
               >
-                {tier.popular && (
-                  <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-gradient-to-r from-[#FFB6D9] to-[#E5D4FF] text-[#0D0B14] text-xs font-bold uppercase tracking-wider flex items-center gap-1 shadow-lg">
-                    <Sparkles className="w-3.5 h-3.5" />
-                    <span>{tier.badge}</span>
+                {pkg.highlight && (
+                  <div className="absolute top-0 right-0 px-4 py-1.5 rounded-bl-2xl bg-gradient-to-r from-[#D83685] to-[#7C3AED] text-white text-[10px] font-black uppercase tracking-wider shadow-md">
+                    Recommended
                   </div>
                 )}
 
                 <div>
-                  <div className="mb-6">
-                    <span className="text-xs font-bold text-[#FFB6D9] uppercase tracking-wider block mb-1">
-                      {tier.badge}
-                    </span>
-                    <h3 className="text-2xl sm:text-3xl font-extrabold text-white mb-2">
-                      {tier.name}
-                    </h3>
-                    <p className="text-gray-300 text-xs sm:text-sm min-h-[40px]">
-                      {tier.tagline}
-                    </p>
-                  </div>
+                  <span className="text-xs font-extrabold text-[#D83685] uppercase tracking-wider block mb-2">
+                    {pkg.tag}
+                  </span>
 
-                  {/* Price */}
-                  <div className="mb-8 p-4 rounded-2xl bg-white/5 border border-white/10 flex items-baseline gap-2">
-                    <span className="text-4xl sm:text-5xl font-black text-white">
-                      ${tier.price}
+                  <h3 className="text-2xl font-black text-[#1A1626] mb-3">
+                    {pkg.name}
+                  </h3>
+
+                  <div className="flex items-baseline gap-1 mb-4">
+                    <span className="text-4xl sm:text-5xl font-black text-[#1A1626]">
+                      {pkg.price}
                     </span>
-                    <span className="text-gray-400 text-xs sm:text-sm">
-                      {activeCategory === 'tech' ? 'one-time / project' : '/ month'}
+                    <span className="text-xs font-bold text-[#4A4259]">
+                      {pkg.period}
                     </span>
                   </div>
 
-                  {/* Features List */}
-                  <div className="space-y-3 mb-8">
-                    {tier.features.map((feat, fIdx) => (
-                      <div key={fIdx} className="flex items-start gap-3 text-xs sm:text-sm text-gray-200">
-                        <Check className="w-4 h-4 text-[#FFB6D9] shrink-0 mt-0.5" />
-                        <span>{feat}</span>
-                      </div>
-                    ))}
+                  <p className="text-[#4A4259] text-xs sm:text-sm font-medium leading-relaxed mb-6">
+                    {pkg.desc}
+                  </p>
+
+                  <div className="pt-6 border-t border-[#FFB6D9]/30">
+                    <ul className="space-y-3 mb-8">
+                      {pkg.features.map((feat) => (
+                        <li key={feat} className="flex items-center gap-2.5 text-xs font-bold text-[#1A1626]">
+                          <Check className="w-4 h-4 text-[#D83685] shrink-0" />
+                          <span>{feat}</span>
+                        </li>
+                      ))}
+                    </ul>
                   </div>
                 </div>
 
                 <div>
                   <a
                     href="#quote-builder"
-                    className={`w-full py-4 rounded-2xl font-bold text-center block transition-all ${
-                      tier.popular
-                        ? 'bg-gradient-to-r from-[#FFB6D9] to-[#E5D4FF] text-[#0D0B14] shadow-xl hover:shadow-[#FFB6D9]/30 hover:scale-[1.02]'
-                        : 'glass-card border border-white/20 text-white hover:bg-white/10 hover:border-[#FFB6D9]'
+                    className={`w-full py-4 rounded-full font-black text-xs flex items-center justify-center gap-2 transition-all shadow-lg cursor-pointer ${
+                      pkg.highlight
+                        ? 'bg-gradient-to-r from-[#FF94C7] via-[#D4B8FF] to-[#99FFE0] text-[#1A1626] hover:scale-105'
+                        : 'glass-card border border-[#FFB6D9] text-[#1A1626] hover:bg-[#FFB6D9]/20'
                     }`}
                   >
-                    Select {tier.name}
+                    <span>Build Custom Scope</span>
+                    <ArrowRight className="w-4 h-4" />
                   </a>
                 </div>
-              </div>
+              </motion.div>
             ))}
-          </motion.div>
-        </AnimatePresence>
-
-        {/* Custom Scope Note */}
-        <div className="mt-16 text-center glass-card p-6 rounded-2xl max-w-3xl mx-auto border border-white/10 flex items-center justify-center gap-3">
-          <ShieldCheck className="w-6 h-6 text-[#C2FFE5] shrink-0" />
-          <p className="text-xs sm:text-sm text-gray-300">
-            Need a custom combination of filming, 3D modeling, or tech automation? Use our{' '}
-            <a href="#quote-builder" className="text-[#FFB6D9] underline font-semibold">
-              Interactive Scope Engine below
-            </a>{' '}
-            to build a custom scope.
-          </p>
+          </AnimatePresence>
         </div>
       </div>
     </section>

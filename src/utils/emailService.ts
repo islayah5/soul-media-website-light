@@ -1,68 +1,50 @@
-export interface QuoteSubmissionData {
+export interface QuoteData {
   name: string;
+  company: string;
   email: string;
-  businessName?: string;
-  deliverableVolume: number;
-  managementLevel: string;
-  servicesSelected: string[];
+  phone?: string;
+  services: string;
+  volume: string;
+  estimateRange: string;
   notes?: string;
 }
 
-export interface ContactSubmissionData {
+export interface ContactData {
   name: string;
   email: string;
-  serviceInterest: string;
+  phone?: string;
+  service: string;
   message: string;
 }
 
-const TARGET_EMAIL = 'soulmediagroup.info@gmail.com';
+export const sendQuoteEmail = (data: QuoteData) => {
+  const subject = encodeURIComponent(`Soul Media - Custom Scope Intake: ${data.name} (${data.company})`);
+  const body = encodeURIComponent(
+    `Executive Intake Request from Soul Media Website\n\n` +
+    `Name: ${data.name}\n` +
+    `Company: ${data.company}\n` +
+    `Email: ${data.email}\n` +
+    `Phone: ${data.phone || 'N/A'}\n\n` +
+    `Scope Details:\n` +
+    `- Deliverable Output: ${data.volume}\n` +
+    `- Required Services: ${data.services}\n` +
+    `- Estimated Scope Investment Range: ${data.estimateRange}\n\n` +
+    `Additional Notes:\n${data.notes || 'None provided'}\n`
+  );
 
-export const formatQuoteEmail = (data: QuoteSubmissionData): { subject: string; body: string } => {
-  const subject = `New Soul Media Strategy Request from ${data.name}`;
-  const body = `SOUL MEDIA CUSTOM SCOPE REQUEST
-===========================================
-Client Name: ${data.name}
-Email Address: ${data.email}
-Business / Brand: ${data.businessName || 'Not specified'}
-
-SCOPE & VOLUME DETAILS:
--------------------------------------------
-Monthly Deliverables Target: ${data.deliverableVolume} assets / month
-Management Preference: ${data.managementLevel}
-
-SELECTED SERVICES & MODULES:
--------------------------------------------
-${data.servicesSelected.length > 0 ? data.servicesSelected.map(s => `• ${s}`).join('\n') : '• Core Strategy & Media Production'}
-
-PROJECT NOTES & VISION:
--------------------------------------------
-${data.notes || 'No specific notes provided.'}
-
-Submitted via Soul Media Digital Portal on ${new Date().toLocaleDateString()}
-`;
-
-  return { subject, body };
+  window.location.href = `mailto:contact@soulmediagroup.com?subject=${subject}&body=${body}`;
 };
 
-export const formatContactEmail = (data: ContactSubmissionData): { subject: string; body: string } => {
-  const subject = `Direct Consultation Request: ${data.name} (${data.serviceInterest})`;
-  const body = `SOUL MEDIA DIRECT CONSULTATION INQUIRY
-===========================================
-Name: ${data.name}
-Email: ${data.email}
-Service Focus: ${data.serviceInterest}
+export const sendContactEmail = (data: ContactData) => {
+  const subject = encodeURIComponent(`Soul Media - Strategy Call Request: ${data.name}`);
+  const body = encodeURIComponent(
+    `Direct Strategy Intake from Soul Media Website\n\n` +
+    `Name: ${data.name}\n` +
+    `Email: ${data.email}\n` +
+    `Phone: ${data.phone || 'N/A'}\n` +
+    `Primary Capability Interest: ${data.service}\n\n` +
+    `Message:\n${data.message}\n`
+  );
 
-MESSAGE:
--------------------------------------------
-${data.message}
-
-Submitted via Soul Media Contact Form on ${new Date().toLocaleDateString()}
-`;
-
-  return { subject, body };
-};
-
-export const triggerMailto = (subject: string, body: string): void => {
-  const mailtoUrl = `mailto:${TARGET_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-  window.location.href = mailtoUrl;
+  window.location.href = `mailto:contact@soulmediagroup.com?subject=${subject}&body=${body}`;
 };

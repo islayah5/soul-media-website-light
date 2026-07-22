@@ -1,42 +1,39 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Mail, MessageSquare, Send, Calendar, CheckCircle2 } from 'lucide-react';
-import { formatContactEmail, triggerMailto } from '../utils/emailService';
+import { Mail, Phone, MapPin, Send, MessageSquare, Clock, CheckCircle2 } from 'lucide-react';
+import { sendContactEmail } from '../utils/emailService';
 
 export const Contact: React.FC = () => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    serviceInterest: 'Cinematic Video Production',
+    phone: '',
+    service: 'Cinematic On-Location Filming',
     message: '',
   });
-  const [status, setStatus] = useState<string | null>(null);
+
+  const [submitted, setSubmitted] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.name || !formData.email) {
-      setStatus('Please provide your name and email address.');
-      return;
-    }
-
-    const { subject, body } = formatContactEmail(formData);
-    setStatus('Opening email client...');
-    triggerMailto(subject, body);
+    sendContactEmail(formData);
+    setSubmitted(true);
+    setTimeout(() => setSubmitted(false), 6000);
   };
 
   return (
     <section id="contact" className="py-28 px-6 relative z-10">
       <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          {/* Left Column Info */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+          {/* Left Info Column */}
           <div>
             <motion.span
               initial={{ opacity: 0, y: 15 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="text-xs font-bold uppercase tracking-widest text-[#FFB6D9] mb-3 block"
+              className="text-xs font-black uppercase tracking-widest text-[#D83685] mb-3 block"
             >
-              Direct Consultation
+              Direct Executive Intake
             </motion.span>
 
             <motion.h2
@@ -44,118 +41,137 @@ export const Contact: React.FC = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.1 }}
-              className="text-4xl sm:text-5xl font-extrabold mb-6"
+              className="text-4xl sm:text-5xl font-black mb-6 text-[#1A1626]"
             >
-              Let’s Build Something <br />
-              <span className="gradient-text">Undeniable Together</span>
+              Let's Build Something <br />
+              <span className="gradient-text">Extraordinary Together</span>
             </motion.h2>
 
-            <p className="text-gray-300 text-base sm:text-lg mb-8 leading-relaxed">
-              Have a custom project, upcoming brand shoot, or executive inquiry? Connect directly with our leadership team.
+            <p className="text-[#4A4259] text-base sm:text-lg font-medium leading-relaxed mb-10">
+              Ready to elevate your media presence? Connect directly with Jada, Isaiah, and Joe to schedule an executive strategy session.
             </p>
 
-            {/* Channel Cards */}
-            <div className="space-y-4">
-              <div className="glass-card p-5 rounded-2xl border border-white/10 flex items-center gap-4">
-                <div className="w-12 h-12 rounded-xl bg-[#FFB6D9]/15 border border-[#FFB6D9]/30 flex items-center justify-center text-[#FFB6D9]">
-                  <Mail className="w-6 h-6" />
+            <div className="space-y-6 mb-10">
+              <div className="flex items-center gap-4 p-4 rounded-2xl glass-card border border-[#FFB6D9]/50 shadow-md">
+                <div className="w-12 h-12 rounded-xl bg-[#FFB6D9]/30 text-[#D83685] flex items-center justify-center shrink-0">
+                  <MapPin className="w-6 h-6" />
                 </div>
                 <div>
-                  <span className="text-xs text-gray-400 block font-medium">Direct Executive Email</span>
-                  <a href="mailto:soulmediagroup.info@gmail.com" className="text-base font-bold text-white hover:text-[#FFB6D9] transition-colors">
-                    soulmediagroup.info@gmail.com
-                  </a>
+                  <span className="text-xs font-black uppercase text-[#D83685] block">Regional HQ</span>
+                  <span className="text-base font-black text-[#1A1626]">Tampa Bay / Clearwater / St. Petersburg, FL</span>
                 </div>
               </div>
 
-              <div className="glass-card p-5 rounded-2xl border border-white/10 flex items-center gap-4">
-                <div className="w-12 h-12 rounded-xl bg-[#E5D4FF]/15 border border-[#E5D4FF]/30 flex items-center justify-center text-[#E5D4FF]">
-                  <Calendar className="w-6 h-6" />
+              <div className="flex items-center gap-4 p-4 rounded-2xl glass-card border border-[#FFB6D9]/50 shadow-md">
+                <div className="w-12 h-12 rounded-xl bg-[#D4B8FF]/30 text-[#7C3AED] flex items-center justify-center shrink-0">
+                  <Mail className="w-6 h-6" />
                 </div>
                 <div>
-                  <span className="text-xs text-gray-400 block font-medium">Strategy Consultation</span>
-                  <span className="text-base font-bold text-white">Direct 1-on-1 Session with Founders</span>
+                  <span className="text-xs font-black uppercase text-[#D83685] block">Direct Executive Email</span>
+                  <span className="text-base font-black text-[#1A1626]">contact@soulmediagroup.com</span>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-4 p-4 rounded-2xl glass-card border border-[#FFB6D9]/50 shadow-md">
+                <div className="w-12 h-12 rounded-xl bg-[#C2FFE5]/50 text-[#059669] flex items-center justify-center shrink-0">
+                  <Clock className="w-6 h-6" />
+                </div>
+                <div>
+                  <span className="text-xs font-black uppercase text-[#D83685] block">Response SLA</span>
+                  <span className="text-base font-black text-[#1A1626]">Guaranteed 24-Hour Executive Turnaround</span>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Right Column Form */}
+          {/* Right Form Column */}
           <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            className="glass-card rounded-3xl p-8 border border-white/15 relative shadow-2xl"
+            className="glass-card p-8 sm:p-12 rounded-3xl border border-[#FFB6D9] shadow-2xl"
           >
-            <h3 className="text-2xl font-bold text-white mb-6 flex items-center gap-2">
-              <MessageSquare className="w-5 h-5 text-[#FFB6D9]" />
-              <span>Send Executive Inquiry</span>
+            <h3 className="text-2xl font-black text-[#1A1626] mb-6">
+              Schedule Your Strategy Call
             </h3>
 
-            {status && (
-              <div className="mb-6 p-4 rounded-xl bg-[#FFB6D9]/15 border border-[#FFB6D9] text-[#FFB6D9] text-xs font-semibold flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 shrink-0" />
-                <span>{status}</span>
-              </div>
-            )}
-
-            <form onSubmit={handleSubmit} className="space-y-5">
+            <form onSubmit={handleSubmit} className="space-y-6">
               <div>
-                <label className="text-xs font-semibold text-gray-300 mb-1 block">Your Name *</label>
+                <label className="text-xs font-black text-[#D83685] uppercase tracking-wider block mb-2">Your Name *</label>
                 <input
                   type="text"
-                  placeholder="e.g. Alex Morgan"
+                  required
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:border-[#FFB6D9] focus:outline-none text-sm"
+                  placeholder="Isaiah Chandler"
+                  className="w-full px-4 py-3 rounded-2xl glass-card border border-[#FFB6D9] text-[#1A1626] font-bold text-sm focus:outline-none focus:border-[#D83685]"
                 />
               </div>
 
-              <div>
-                <label className="text-xs font-semibold text-gray-300 mb-1 block">Your Email Address *</label>
-                <input
-                  type="email"
-                  placeholder="alex@brand.com"
-                  value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:border-[#FFB6D9] focus:outline-none text-sm"
-                />
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div>
+                  <label className="text-xs font-black text-[#D83685] uppercase tracking-wider block mb-2">Work Email *</label>
+                  <input
+                    type="email"
+                    required
+                    value={formData.email}
+                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    placeholder="isaiah@brand.com"
+                    className="w-full px-4 py-3 rounded-2xl glass-card border border-[#FFB6D9] text-[#1A1626] font-bold text-sm focus:outline-none focus:border-[#D83685]"
+                  />
+                </div>
+                <div>
+                  <label className="text-xs font-black text-[#D83685] uppercase tracking-wider block mb-2">Phone Number</label>
+                  <input
+                    type="tel"
+                    value={formData.phone}
+                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                    placeholder="(813) 555-0199"
+                    className="w-full px-4 py-3 rounded-2xl glass-card border border-[#FFB6D9] text-[#1A1626] font-bold text-sm focus:outline-none focus:border-[#D83685]"
+                  />
+                </div>
               </div>
 
               <div>
-                <label className="text-xs font-semibold text-gray-300 mb-1 block">Primary Interest</label>
+                <label className="text-xs font-black text-[#D83685] uppercase tracking-wider block mb-2">Primary Interest</label>
                 <select
-                  value={formData.serviceInterest}
-                  onChange={(e) => setFormData({ ...formData, serviceInterest: e.target.value })}
-                  className="w-full px-4 py-3 rounded-xl bg-[#161224] border border-white/10 text-white focus:border-[#FFB6D9] focus:outline-none text-sm"
+                  value={formData.service}
+                  onChange={(e) => setFormData({ ...formData, service: e.target.value })}
+                  className="w-full px-4 py-3 rounded-2xl glass-card border border-[#FFB6D9] text-[#1A1626] font-bold text-sm focus:outline-none focus:border-[#D83685]"
                 >
-                  <option value="Cinematic Video Production">Cinematic Video Production</option>
-                  <option value="Social Media Retainer">Social Media Retainer</option>
-                  <option value="Paid Ad Growth Campaign">Paid Ad Growth Campaign</option>
-                  <option value="Brand Identity & Strategy">Brand Identity & Strategy</option>
-                  <option value="Dedicated SMM / Editor Sourcing">Dedicated SMM / Editor Sourcing</option>
-                  <option value="Custom Scope / Other">Custom Scope / Other</option>
+                  <option value="Cinematic On-Location Filming">Cinematic On-Location Filming</option>
+                  <option value="Full Retainer & Social Management">Full Retainer & Social Management</option>
+                  <option value="3D Modeling & Interactive Web">3D Modeling & Interactive Web</option>
+                  <option value="Talent Sourcing & Training Advisory">Talent Sourcing & Training Advisory</option>
                 </select>
               </div>
 
               <div>
-                <label className="text-xs font-semibold text-gray-300 mb-1 block">Message</label>
+                <label className="text-xs font-black text-[#D83685] uppercase tracking-wider block mb-2">Message or Goal</label>
                 <textarea
                   rows={4}
-                  placeholder="Tell us about your brand, current challenges, and project vision..."
+                  required
                   value={formData.message}
                   onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                  className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:border-[#FFB6D9] focus:outline-none text-sm"
+                  placeholder="Briefly describe your goals, budget, or timeline..."
+                  className="w-full p-4 rounded-2xl glass-card border border-[#FFB6D9] text-[#1A1626] font-bold text-sm focus:outline-none focus:border-[#D83685]"
                 />
               </div>
 
               <button
                 type="submit"
-                className="w-full py-4 rounded-xl bg-gradient-to-r from-[#FFB6D9] via-[#E5D4FF] to-[#C2FFE5] text-[#0D0B14] font-extrabold text-sm flex items-center justify-center gap-2 hover:shadow-[0_0_25px_rgba(255,182,217,0.4)] transition-all"
+                className="w-full py-4 rounded-full bg-gradient-to-r from-[#FF94C7] via-[#D4B8FF] to-[#99FFE0] text-[#1A1626] font-black text-sm flex items-center justify-center gap-2 hover:scale-105 transition-all shadow-xl cursor-pointer"
               >
                 <Send className="w-4 h-4" />
-                <span>Submit Direct Inquiry</span>
+                <span>Submit Direct Intake Request</span>
               </button>
+
+              {submitted && (
+                <div className="p-4 rounded-2xl bg-[#C2FFE5]/50 border border-[#059669] text-[#059669] text-xs font-bold flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4" />
+                  <span>Opening mail app to send your request directly!</span>
+                </div>
+              )}
             </form>
           </motion.div>
         </div>

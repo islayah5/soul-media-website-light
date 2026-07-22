@@ -38,7 +38,7 @@ export const Team: React.FC = () => {
       bio: 'Visionary brand architect leading creative direction, brand core definition, and client partnership. Jada works directly with clients to translate their identity into high-converting visual media.',
       image: jadaHeadshot,
       icon: Sparkles,
-      color: 'from-[#FFB6D9] to-[#FF80BF]',
+      color: 'from-[#FF94C7] to-[#D83685]',
       badge: 'Agency Founder',
       portfolioUrl: '', // Ready for Jada's portfolio URL
     },
@@ -49,7 +49,7 @@ export const Team: React.FC = () => {
       bio: 'Operations mastermind architecting scalable post-production workflows, 3D web modeling, automated editing pipelines, and cost-effective remote talent integration for seamless client growth.',
       image: isaiahHeadshot,
       icon: Cpu,
-      color: 'from-[#E5D4FF] to-[#B892FF]',
+      color: 'from-[#D4B8FF] to-[#7C3AED]',
       badge: 'Ops & Tech Lead',
       portfolioUrl: 'https://isaiah-chandler.netlify.app/',
     },
@@ -60,7 +60,7 @@ export const Team: React.FC = () => {
       bio: 'Master lensman and editor orchestrating high-impact commercial video shoots, studio photography, cinematic cuts, and the signature visual styling that sets Soul Media apart.',
       image: joeHeadshot,
       icon: Camera,
-      color: 'from-[#FFD4C2] to-[#C2FFE5]',
+      color: 'from-[#FF9E7A] to-[#059669]',
       badge: 'Production Engine',
       portfolioUrl: '', // Ready for Joe's portfolio URL
     },
@@ -78,15 +78,15 @@ export const Team: React.FC = () => {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.2 }}
-          className="fixed inset-0 z-[99999] bg-[#0D0B14] w-screen h-screen flex flex-col overflow-hidden"
+          className="fixed inset-0 z-[99999] bg-[#FFF5F8] w-screen h-screen flex flex-col overflow-hidden"
           style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0 }}
         >
-          {/* Top Control Header Bar (High Visibility & Zero Clipping) */}
-          <div className="h-16 px-4 sm:px-8 bg-[#0D0B14] border-b border-[#FFB6D9]/30 flex items-center justify-between shrink-0 relative z-[100000] shadow-2xl">
+          {/* Top Control Header Bar */}
+          <div className="h-16 px-4 sm:px-8 bg-[#FFF5F8] border-b border-[#FFB6D9] flex items-center justify-between shrink-0 relative z-[100000] shadow-md">
             {/* Left Action: Return to Soul Media */}
             <button
               onClick={() => setActivePortfolio(null)}
-              className="px-5 py-2.5 rounded-full bg-gradient-to-r from-[#FFB6D9] via-[#E5D4FF] to-[#C2FFE5] text-[#0D0B14] font-black text-xs sm:text-sm flex items-center gap-2 hover:shadow-[0_0_25px_rgba(255,182,217,0.8)] transition-all transform hover:scale-105 active:scale-95 cursor-pointer"
+              className="px-5 py-2.5 rounded-full bg-gradient-to-r from-[#FF94C7] via-[#D4B8FF] to-[#99FFE0] text-[#1A1626] font-black text-xs sm:text-sm flex items-center gap-2 hover:shadow-[0_0_25px_rgba(255,148,199,0.8)] transition-all transform hover:scale-105 active:scale-95 cursor-pointer"
             >
               <ArrowLeft className="w-4 h-4 stroke-[3]" />
               <span>Return to Soul Media</span>
@@ -94,9 +94,9 @@ export const Team: React.FC = () => {
 
             {/* Center Title Indicator */}
             <div className="hidden md:flex items-center gap-3">
-              <span className="w-2 h-2 rounded-full bg-[#C2FFE5] animate-pulse" />
-              <h4 className="text-sm font-bold text-white tracking-wide">
-                {activePortfolio.name} <span className="text-[#FFB6D9]">— {activePortfolio.role}</span>
+              <span className="w-2.5 h-2.5 rounded-full bg-[#059669] animate-pulse" />
+              <h4 className="text-sm font-black text-[#1A1626] tracking-wide">
+                {activePortfolio.name} <span className="text-[#D83685]">— {activePortfolio.role}</span>
               </h4>
             </div>
 
@@ -107,16 +107,16 @@ export const Team: React.FC = () => {
                   href={activePortfolio.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-1.5 px-4 py-2 rounded-full glass-card border border-white/25 text-xs font-bold text-gray-200 hover:text-white hover:border-[#FFB6D9] transition-all cursor-pointer"
+                  className="flex items-center gap-1.5 px-4 py-2 rounded-full glass-card border border-[#FFB6D9] text-xs font-black text-[#1A1626] hover:border-[#D83685] transition-all cursor-pointer"
                   title={`Open ${activePortfolio.name.split(' ')[0]}'s site in a new tab`}
                 >
                   <span className="hidden sm:inline">Open {activePortfolio.name.split(' ')[0]}'s Portfolio in New Tab</span>
-                  <ExternalLink className="w-3.5 h-3.5 text-[#FFB6D9]" />
+                  <ExternalLink className="w-3.5 h-3.5 text-[#D83685]" />
                 </a>
               )}
               <button
                 onClick={() => setActivePortfolio(null)}
-                className="p-2 sm:px-4 sm:py-2 rounded-full bg-white/10 hover:bg-red-500/20 border border-white/20 text-gray-200 hover:text-red-400 font-bold text-xs flex items-center gap-1.5 transition-all cursor-pointer"
+                className="p-2 sm:px-4 sm:py-2 rounded-full bg-white hover:bg-red-500/10 border border-[#FFB6D9] text-[#1A1626] hover:text-red-600 font-bold text-xs flex items-center gap-1.5 transition-all cursor-pointer shadow-sm"
                 aria-label="Close Showcase"
               >
                 <X className="w-4 h-4" />
@@ -125,28 +125,28 @@ export const Team: React.FC = () => {
             </div>
           </div>
 
-          {/* iFrame Viewport Container (Solid #0D0B14 Background, Zero Text Bleed) */}
-          <div className="flex-grow w-full h-[calc(100vh-64px)] relative bg-[#0D0B14]">
+          {/* iFrame Viewport Container */}
+          <div className="flex-grow w-full h-[calc(100vh-64px)] relative bg-[#FFF5F8]">
             {activePortfolio.url ? (
               <iframe
                 src={activePortfolio.url}
                 title={`${activePortfolio.name} Portfolio`}
-                className="w-full h-full border-0 block bg-[#0D0B14]"
+                className="w-full h-full border-0 block bg-[#FFF5F8]"
                 loading="eager"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               />
             ) : (
-              <div className="w-full h-full flex flex-col items-center justify-center p-8 text-center bg-[#0D0B14]">
-                <Sparkles className="w-20 h-20 text-[#FFB6D9] mb-6 opacity-80 animate-pulse" />
-                <h3 className="text-3xl font-black text-white mb-3">
+              <div className="w-full h-full flex flex-col items-center justify-center p-8 text-center bg-[#FFF5F8]">
+                <Sparkles className="w-20 h-20 text-[#D83685] mb-6 opacity-80 animate-pulse" />
+                <h3 className="text-3xl font-black text-[#1A1626] mb-3">
                   {activePortfolio.name}'s Executive Portfolio Showcase
                 </h3>
-                <p className="text-base text-gray-300 max-w-lg mb-8 leading-relaxed">
+                <p className="text-base text-[#4A4259] max-w-lg mb-8 leading-relaxed font-medium">
                   Direct showcase portfolio link will be active here shortly. Connect directly with the executive team for custom presentation decks.
                 </p>
                 <button
                   onClick={() => setActivePortfolio(null)}
-                  className="px-8 py-4 rounded-full bg-gradient-to-r from-[#FFB6D9] to-[#E5D4FF] text-[#0D0B14] font-extrabold text-sm hover:scale-105 transition-all cursor-pointer"
+                  className="px-8 py-4 rounded-full bg-gradient-to-r from-[#FF94C7] to-[#D4B8FF] text-[#1A1626] font-extrabold text-sm hover:scale-105 transition-all cursor-pointer shadow-lg"
                 >
                   Return to Soul Media Website
                 </button>
@@ -160,7 +160,7 @@ export const Team: React.FC = () => {
   };
 
   return (
-    <section id="team" className="py-28 px-6 relative z-10 bg-[#0A0810]/60">
+    <section id="team" className="py-28 px-6 relative z-10 bg-[#FFF5F8]/60">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto mb-20">
@@ -168,7 +168,7 @@ export const Team: React.FC = () => {
             initial={{ opacity: 0, y: 15 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-xs font-bold uppercase tracking-widest text-[#FFB6D9] mb-3 block"
+            className="text-xs font-black uppercase tracking-widest text-[#D83685] mb-3 block"
           >
             Leadership Spotlight
           </motion.span>
@@ -178,7 +178,7 @@ export const Team: React.FC = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className="text-4xl sm:text-5xl md:text-6xl font-extrabold mb-6"
+            className="text-4xl sm:text-5xl md:text-6xl font-black mb-6 text-[#1A1626]"
           >
             The Minds Behind <br />
             <span className="gradient-text">Soul Media</span>
@@ -189,7 +189,7 @@ export const Team: React.FC = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.2 }}
-            className="text-gray-300 text-lg sm:text-xl font-normal leading-relaxed"
+            className="text-[#4A4259] text-lg sm:text-xl font-medium leading-relaxed"
           >
             A high-velocity 3-person executive core pairing cinematic artistry, operational technology, and personable brand direction.
           </motion.p>
@@ -204,20 +204,20 @@ export const Team: React.FC = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.15 }}
-              className="glass-card glass-card-hover rounded-3xl overflow-hidden border border-white/10 flex flex-col justify-between group"
+              className="glass-card glass-card-hover rounded-3xl overflow-hidden border border-[#FFB6D9]/50 shadow-xl flex flex-col justify-between group"
             >
               <div>
                 {/* Image Container */}
-                <div className="relative aspect-[4/5] overflow-hidden bg-[#161224]">
+                <div className="relative aspect-[4/5] overflow-hidden bg-[#FFF5F8]">
                   <img
                     src={member.image}
                     alt={member.name}
                     className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#0D0B14] via-transparent to-transparent opacity-80" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#FFF5F8] via-transparent to-transparent opacity-80" />
 
                   {/* Top Badge */}
-                  <div className="absolute top-4 left-4 px-3 py-1 rounded-full glass-card border border-white/20 text-xs font-bold text-[#FFB6D9] flex items-center gap-1.5 shadow-lg">
+                  <div className="absolute top-4 left-4 px-3.5 py-1.5 rounded-full glass-card border border-[#FFB6D9] text-xs font-black text-[#D83685] flex items-center gap-1.5 shadow-md">
                     <member.icon className="w-3.5 h-3.5" />
                     <span>{member.badge}</span>
                   </div>
@@ -225,16 +225,16 @@ export const Team: React.FC = () => {
 
                 {/* Content */}
                 <div className="p-8">
-                  <h3 className="text-2xl sm:text-3xl font-extrabold text-[#FFB6D9] mb-1">
+                  <h3 className="text-2xl sm:text-3xl font-black text-[#1A1626] mb-1">
                     {member.name}
                   </h3>
-                  <span className="text-xs font-bold text-[#FFB6D9] uppercase tracking-wider block mb-1">
+                  <span className="text-xs font-black text-[#D83685] uppercase tracking-wider block mb-1">
                     {member.role}
                   </span>
-                  <span className="text-xs font-medium text-gray-400 block mb-4 italic">
+                  <span className="text-xs font-bold text-[#4A4259] block mb-4 italic">
                     {member.subRole}
                   </span>
-                  <p className="text-gray-300 text-sm leading-relaxed mb-6">
+                  <p className="text-[#4A4259] text-sm font-medium leading-relaxed mb-6">
                     {member.bio}
                   </p>
                 </div>
@@ -252,7 +252,7 @@ export const Team: React.FC = () => {
                           url: member.portfolioUrl,
                         })
                       }
-                      className="w-full py-3.5 rounded-2xl bg-gradient-to-r from-[#FFB6D9] via-[#E5D4FF] to-[#C2FFE5] text-[#0D0B14] font-extrabold text-xs flex items-center justify-center gap-2 hover:scale-[1.02] transition-all shadow-xl shadow-[#FFB6D9]/20 cursor-pointer"
+                      className="w-full py-3.5 rounded-2xl bg-gradient-to-r from-[#FF94C7] via-[#D4B8FF] to-[#99FFE0] text-[#1A1626] font-black text-xs flex items-center justify-center gap-2 hover:scale-[1.02] transition-all shadow-lg cursor-pointer"
                     >
                       <Globe className="w-4 h-4" />
                       <span>Preview Interactive Portfolio</span>
@@ -262,10 +262,10 @@ export const Team: React.FC = () => {
                       href={member.portfolioUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="w-full py-2.5 rounded-xl glass-card border border-white/15 text-gray-300 hover:text-white hover:border-[#FFB6D9] text-xs font-bold flex items-center justify-center gap-2 transition-all cursor-pointer"
+                      className="w-full py-2.5 rounded-xl glass-card border border-[#FFB6D9] text-[#1A1626] hover:border-[#D83685] text-xs font-bold flex items-center justify-center gap-2 transition-all cursor-pointer"
                     >
                       <span>Open {member.name.split(' ')[0]}'s Portfolio in New Tab</span>
-                      <ExternalLink className="w-3.5 h-3.5 text-[#FFB6D9]" />
+                      <ExternalLink className="w-3.5 h-3.5 text-[#D83685]" />
                     </a>
                   </>
                 ) : (
@@ -277,9 +277,9 @@ export const Team: React.FC = () => {
                         url: '',
                       })
                     }
-                    className="w-full py-3.5 rounded-2xl glass-card border border-white/10 text-xs font-bold text-gray-300 flex items-center justify-center gap-2 hover:text-white hover:border-[#FFB6D9] transition-all cursor-pointer"
+                    className="w-full py-3.5 rounded-2xl glass-card border border-[#FFB6D9] text-xs font-black text-[#4A4259] flex items-center justify-center gap-2 hover:text-[#1A1626] transition-all cursor-pointer"
                   >
-                    <Award className="w-4 h-4 text-[#C2FFE5]" />
+                    <Award className="w-4 h-4 text-[#059669]" />
                     <span>Executive Showcase</span>
                   </button>
                 )}

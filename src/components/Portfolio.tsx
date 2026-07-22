@@ -1,74 +1,52 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Play, ExternalLink, X } from 'lucide-react';
+import { Play, Sparkles, X } from 'lucide-react';
 
 export const Portfolio: React.FC = () => {
-  const [activeFilter, setActiveFilter] = useState('All');
-  const [selectedVideo, setSelectedVideo] = useState<{ title: string; category: string; metric: string } | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState('All');
+  const [activeVideoUrl, setActiveVideoUrl] = useState<string | null>(null);
 
-  // Prevent background page scrolling when video lightbox is open
-  useEffect(() => {
-    if (selectedVideo) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-    }
+  const categories = ['All', 'Filming & Commercials', 'Short-Form Reels', '3D Web & Renders', 'Brand Strategy'];
 
-    return () => {
-      document.body.style.overflow = '';
-    };
-  }, [selectedVideo]);
-
-  const categories = ['All', 'Video Production', 'Brand Strategy', 'Social Campaigns', 'Web & Tech'];
-
-  const projects = [
+  const caseStudies = [
     {
-      title: 'Aura Fitness Commercial',
-      category: 'Video Production',
-      metric: 'Featured Campaign',
-      image: 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=1000&q=80',
-      description: 'Cinematic 4K brand film shot on location with custom sound design and dynamic speed ramping.',
+      title: 'Aura Lifestyle Commercial Shoot',
+      category: 'Filming & Commercials',
+      image: 'https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?auto=format&fit=crop&q=80&w=1200',
+      client: 'Aura Apparel',
+      impact: '1.4M Organic Views',
+      videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1',
     },
     {
-      title: 'Velvet Horizon Rebrand',
+      title: 'Velvet Horizon Rebrand & Motion',
       category: 'Brand Strategy',
-      metric: 'Brand Identity',
-      image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1000&q=80',
-      description: 'Complete brand positioning, visual design system, and executive marketing guidelines.',
+      image: 'https://images.unsplash.com/photo-1518173946687-a4c8a383392e?auto=format&fit=crop&q=80&w=1200',
+      client: 'Velvet Horizon',
+      impact: '3.2x Engagement Surge',
+      videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1',
     },
     {
-      title: 'Luxe Lifestyle Campaign',
-      category: 'Social Campaigns',
-      metric: 'Social Series',
-      image: 'https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?auto=format&fit=crop&w=1000&q=80',
-      description: 'High-volume short-form content system with targeted ad creative testing.',
+      title: 'Solstice 3D Web Canvas Experience',
+      category: '3D Web & Renders',
+      image: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&q=80&w=1200',
+      client: 'Solstice Tech',
+      impact: '88% Increased Time-on-Site',
+      videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1',
     },
     {
-      title: 'Apex Tech Portal',
-      category: 'Web & Tech',
-      metric: '3D Web Build',
-      image: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1000&q=80',
-      description: 'High-speed React web experience with interactive 3D modeling and smart lead pipelines.',
-    },
-    {
-      title: 'Neon Pulse Documentary',
-      category: 'Video Production',
-      metric: 'Behind the Scenes',
-      image: 'https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?auto=format&fit=crop&w=1000&q=80',
-      description: 'Behind-the-scenes studio production mini-doc with raw audio mastering and color grading.',
-    },
-    {
-      title: 'Urban Kinetic Fashion',
-      category: 'Social Campaigns',
-      metric: 'Ad Creative Suite',
-      image: 'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=1000&q=80',
-      description: 'Multi-variant TikTok & Meta ad creative scaling campaign for streetwear brand.',
+      title: 'High-Volume Executive Reel Series',
+      category: 'Short-Form Reels',
+      image: 'https://images.unsplash.com/photo-1536240478700-b869070f9279?auto=format&fit=crop&q=80&w=1200',
+      client: 'Apex Capital',
+      impact: '420K Reach in 14 Days',
+      videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1',
     },
   ];
 
-  const filteredProjects = activeFilter === 'All'
-    ? projects
-    : projects.filter((p) => p.category === activeFilter);
+  const filteredStudies =
+    selectedCategory === 'All'
+      ? caseStudies
+      : caseStudies.filter((item) => item.category === selectedCategory);
 
   return (
     <section id="portfolio" className="py-28 px-6 relative z-10">
@@ -79,9 +57,9 @@ export const Portfolio: React.FC = () => {
             initial={{ opacity: 0, y: 15 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-xs font-bold uppercase tracking-widest text-[#E5D4FF] mb-3 block"
+            className="text-xs font-black uppercase tracking-widest text-[#D83685] mb-3 block"
           >
-            Creative Showcase
+            Selected Portfolio & Case Studies
           </motion.span>
 
           <motion.h2
@@ -89,22 +67,22 @@ export const Portfolio: React.FC = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className="text-4xl sm:text-5xl md:text-6xl font-extrabold mb-6"
+            className="text-4xl sm:text-5xl md:text-6xl font-black mb-6 text-[#1A1626]"
           >
-            Featured Client <br />
-            <span className="gradient-text">Case Studies & Creative</span>
+            Recent Works & <br />
+            <span className="gradient-text">Visual Directing</span>
           </motion.h2>
 
-          {/* Category Filter Pills */}
-          <div className="flex flex-wrap justify-center gap-3 mt-8">
+          {/* Filter Pills */}
+          <div className="flex flex-wrap justify-center gap-2.5 mt-8 p-2 rounded-full glass-card border border-[#FFB6D9]/50 shadow-md">
             {categories.map((cat) => (
               <button
                 key={cat}
-                onClick={() => setActiveFilter(cat)}
-                className={`px-5 py-2 rounded-full text-xs font-semibold transition-all ${
-                  activeFilter === cat
-                    ? 'bg-gradient-to-r from-[#FFB6D9] to-[#E5D4FF] text-[#0D0B14] shadow-lg scale-105'
-                    : 'glass-card text-gray-300 hover:text-white border border-white/10'
+                onClick={() => setSelectedCategory(cat)}
+                className={`px-5 py-2.5 rounded-full text-xs font-black transition-all cursor-pointer ${
+                  selectedCategory === cat
+                    ? 'bg-gradient-to-r from-[#FF94C7] via-[#D4B8FF] to-[#99FFE0] text-[#1A1626] shadow-md scale-105'
+                    : 'text-[#4A4259] hover:text-[#1A1626]'
                 }`}
               >
                 {cat}
@@ -113,130 +91,87 @@ export const Portfolio: React.FC = () => {
           </div>
         </div>
 
-        {/* Portfolio Grid */}
-        <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          <AnimatePresence>
-            {filteredProjects.map((project, index) => (
+        {/* Case Studies Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <AnimatePresence mode="wait">
+            {filteredStudies.map((study, idx) => (
               <motion.div
-                key={project.title}
-                layout
-                initial={{ opacity: 0, scale: 0.9 }}
+                key={study.title}
+                initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.9 }}
-                transition={{ duration: 0.3, delay: index * 0.05 }}
-                className="glass-card glass-card-hover rounded-3xl overflow-hidden border border-white/10 group flex flex-col justify-between"
+                exit={{ opacity: 0, scale: 0.95 }}
+                transition={{ duration: 0.3, delay: idx * 0.1 }}
+                className="glass-card glass-card-hover rounded-3xl overflow-hidden border border-[#FFB6D9]/50 shadow-xl group cursor-pointer"
+                onClick={() => setActiveVideoUrl(study.videoUrl)}
               >
-                <div>
-                  {/* Thumbnail Container */}
-                  <div className="relative aspect-[16/10] overflow-hidden bg-black">
-                    <img
-                      src={project.image}
-                      alt={project.title}
-                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-90 group-hover:opacity-100"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#0D0B14] via-transparent to-transparent opacity-60" />
+                <div className="relative aspect-[16/9] overflow-hidden">
+                  <img
+                    src={study.image}
+                    alt={study.title}
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#1A1626]/80 via-[#1A1626]/20 to-transparent" />
 
-                    {/* Play / Inspect Overlay */}
-                    <button
-                      onClick={() => setSelectedVideo(project)}
-                      className="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                    >
-                      <div className="w-14 h-14 rounded-full bg-[#FFB6D9] text-[#0D0B14] flex items-center justify-center shadow-xl transform scale-75 group-hover:scale-100 transition-transform">
-                        <Play className="w-6 h-6 fill-current ml-0.5" />
-                      </div>
-                    </button>
-
-                    {/* Category Tag */}
-                    <div className="absolute top-4 left-4 px-3 py-1 rounded-full bg-black/60 backdrop-blur-md text-[10px] font-bold text-[#FFB6D9] uppercase tracking-wider border border-white/10">
-                      {project.category}
+                  {/* Play Button Overlay */}
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="w-16 h-16 rounded-full bg-[#FFF5F8]/90 text-[#D83685] flex items-center justify-center shadow-xl transform group-hover:scale-110 transition-transform">
+                      <Play className="w-6 h-6 fill-current ml-1" />
                     </div>
                   </div>
 
-                  {/* Project Info */}
-                  <div className="p-6">
-                    <div className="text-xs font-bold text-[#C2FFE5] uppercase tracking-wider mb-2 flex items-center gap-1.5">
-                      <span className="w-2 h-2 rounded-full bg-[#C2FFE5] animate-pulse" />
-                      <span>{project.metric}</span>
-                    </div>
-
-                    <h3 className="text-xl font-bold text-white mb-2 group-hover:text-[#FFB6D9] transition-colors">
-                      {project.title}
-                    </h3>
-
-                    <p className="text-gray-300 text-xs sm:text-sm leading-relaxed">
-                      {project.description}
-                    </p>
+                  {/* Top Badges */}
+                  <div className="absolute top-4 left-4 right-4 flex justify-between items-center">
+                    <span className="px-3.5 py-1.5 rounded-full bg-[#FFF5F8]/90 border border-[#FFB6D9] text-xs font-black text-[#D83685]">
+                      {study.category}
+                    </span>
+                    <span className="px-3.5 py-1.5 rounded-full bg-[#059669] text-white text-xs font-black">
+                      {study.impact}
+                    </span>
                   </div>
                 </div>
 
-                <div className="px-6 pb-6 pt-2">
-                  <button
-                    onClick={() => setSelectedVideo(project)}
-                    className="w-full py-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-semibold text-gray-200 flex items-center justify-center gap-2 transition-all"
-                  >
-                    <span>View Case Details</span>
-                    <ExternalLink className="w-3.5 h-3.5" />
-                  </button>
+                <div className="p-8">
+                  <span className="text-xs font-extrabold text-[#D83685] uppercase tracking-wider block mb-1">
+                    Client: {study.client}
+                  </span>
+                  <h3 className="text-2xl font-black text-[#1A1626]">
+                    {study.title}
+                  </h3>
                 </div>
               </motion.div>
             ))}
           </AnimatePresence>
-        </motion.div>
+        </div>
       </div>
 
-      {/* Lightbox Video Modal */}
+      {/* Video Lightbox Modal */}
       <AnimatePresence>
-        {selectedVideo && (
+        {activeVideoUrl && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[100] bg-black/90 backdrop-blur-2xl flex items-center justify-center p-6"
-            onClick={() => setSelectedVideo(null)}
+            className="fixed inset-0 z-50 bg-[#1A1626]/90 backdrop-blur-xl flex items-center justify-center p-6"
+            onClick={() => setActiveVideoUrl(null)}
           >
-            <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              className="glass-card max-w-2xl w-full p-8 rounded-3xl border border-[#FFB6D9]/40 relative"
+            <div
+              className="relative w-full max-w-4xl aspect-video rounded-3xl overflow-hidden glass-card border border-[#FFB6D9]"
               onClick={(e) => e.stopPropagation()}
             >
               <button
-                onClick={() => setSelectedVideo(null)}
-                className="absolute top-6 right-6 p-2 rounded-full bg-white/10 text-white hover:text-[#FFB6D9]"
+                onClick={() => setActiveVideoUrl(null)}
+                className="absolute top-4 right-4 z-10 w-10 h-10 rounded-full bg-[#FFF5F8] text-[#1A1626] flex items-center justify-center font-bold"
               >
                 <X className="w-5 h-5" />
               </button>
-
-              <span className="text-xs font-bold uppercase tracking-widest text-[#FFB6D9] mb-2 block">
-                {selectedVideo.category}
-              </span>
-
-              <h3 className="text-3xl font-extrabold text-white mb-3">
-                {selectedVideo.title}
-              </h3>
-
-              <div className="p-3 rounded-xl bg-[#C2FFE5]/15 border border-[#C2FFE5]/30 text-[#C2FFE5] text-xs font-bold mb-6 inline-block">
-                Focus Area: {selectedVideo.metric}
-              </div>
-
-              <div className="aspect-video rounded-2xl bg-black/60 border border-white/10 flex items-center justify-center mb-6 relative overflow-hidden">
-                <div className="text-center p-6">
-                  <Play className="w-16 h-16 text-[#FFB6D9] mx-auto mb-3 opacity-80" />
-                  <p className="text-xs text-gray-400">Cinematic Reel Showcase Active</p>
-                </div>
-              </div>
-
-              <div className="flex justify-end">
-                <a
-                  href="#quote-builder"
-                  onClick={() => setSelectedVideo(null)}
-                  className="px-6 py-3 rounded-full bg-gradient-to-r from-[#FFB6D9] to-[#E5D4FF] text-[#0D0B14] font-bold text-xs"
-                >
-                  Book Similar Campaign
-                </a>
-              </div>
-            </motion.div>
+              <iframe
+                src={activeVideoUrl}
+                title="Project Video Reel"
+                className="w-full h-full border-0"
+                allow="autoplay; encrypted-media"
+                allowFullScreen
+              />
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

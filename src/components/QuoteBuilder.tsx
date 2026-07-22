@@ -1,98 +1,131 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import confetti from 'canvas-confetti';
-import { Sparkles, Sliders, CheckSquare, User, Send, CheckCircle, ArrowRight, ArrowLeft } from 'lucide-react';
-import { formatQuoteEmail, triggerMailto } from '../utils/emailService';
+import {
+  Sliders,
+  CheckCircle2,
+  Send,
+  Sparkles,
+  Calculator,
+  Film,
+  Scissors,
+  Box,
+  Palette,
+  Share2,
+  Users,
+  Building2,
+  Mail,
+  User,
+  Phone,
+  MessageSquare,
+  ArrowRight,
+  ArrowLeft,
+} from 'lucide-react';
+import { sendQuoteEmail } from '../utils/emailService';
 
 export const QuoteBuilder: React.FC = () => {
   const [step, setStep] = useState(1);
-  const [volume, setVolume] = useState(16);
-  const [management, setManagement] = useState<'full' | 'production'>('production');
-  const [selectedServices, setSelectedServices] = useState<string[]>([
-    'On-Location Directing & Filming',
-    'Post-Production & Visual Editing Pipeline',
+  const [volume, setVolume] = useState(12); // Assets per month
+  const [isRetainer, setIsRetainer] = useState(true);
+
+  // Service Selections
+  const [services, setServices] = useState<string[]>([
+    'Cinematic On-Location Filming',
+    'Post-Production & Visual Editing',
   ]);
+
+  // Client Details
   const [formData, setFormData] = useState({
     name: '',
+    company: '',
     email: '',
-    businessName: '',
+    phone: '',
     notes: '',
   });
-  const [submitted, setSubmitted] = useState(false);
+
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
   const availableServices = [
-    'On-Location Directing & Filming (Tampa Bay / Remote)',
-    'Post-Production & Visual Editing Pipeline',
-    '3D Modeling & WebGL Product Renders',
-    'Graphic Design & Brand Assets Suite',
-    'Intentional Social Media Management',
-    'Ad Creative & Campaign Strategy Suite',
-    'Modern Web & Tech Automation Solutions',
-    'Talent Sourcing & Training Advisory (In-House SMM/Editor)',
+    { name: 'Cinematic On-Location Filming', icon: Film, base: 1200 },
+    { name: 'Post-Production & Visual Editing', icon: Scissors, base: 900 },
+    { name: '3D Modeling & Interactive Web', icon: Box, base: 1500 },
+    { name: 'Graphic Design & Brand Assets', icon: Palette, base: 600 },
+    { name: 'Intentional Social Media Management', icon: Share2, base: 1000 },
+    { name: 'Talent Sourcing & Training Advisory', icon: Users, base: 800 },
   ];
 
-  const toggleService = (service: string) => {
-    if (selectedServices.includes(service)) {
-      setSelectedServices(selectedServices.filter((s) => s !== service));
+  const toggleService = (name: string) => {
+    if (services.includes(name)) {
+      setServices(services.filter((s) => s !== name));
     } else {
-      setSelectedServices([...selectedServices, service]);
+      setServices([...services, name]);
     }
   };
 
-  // Calculate live estimated monthly range
-  const basePricePerAsset = management === 'full' ? 180 : 120;
-  const serviceMultiplier = 1 + selectedServices.length * 0.12;
-  const estimatedMin = Math.round(volume * basePricePerAsset * serviceMultiplier);
-  const estimatedMax = Math.round(estimatedMin * 1.3);
+  // Calculate Scope Estimate Range
+  const calculateEstimate = () => {
+    let base = services.reduce((acc, curr) => {
+      const found = availableServices.find((s) => s.name === curr);
+      return acc + (found ? found.base : 500);
+    }, 1000);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!formData.name || !formData.email) {
-      setToastMessage('Please enter your name and email address.');
-      setTimeout(() => setToastMessage(null), 4000);
-      return;
-    }
+    const volumeMultiplier = 1 + (volume - 4) * 0.05;
+    const totalBase = base * volumeMultiplier;
 
-    try {
+    const min = Math.round(totalBase * 0.85);
+    const max = Math.round(totalBase * 1.25);
+
+    return { min: min.toLocaleString(), max: max.toLocaleString() };
+  };
+
+  const handleNext = () => {
+    if (step === 3) {
+      // Trigger Confetti Celebration
       confetti({
-        particleCount: 150,
-        spread: 80,
+        particleCount: 100,
+        spread: 70,
         origin: { y: 0.6 },
         colors: ['#FFB6D9', '#E5D4FF', '#FFD4C2', '#C2FFE5'],
       });
-    } catch (err) {
-      console.log('Confetti triggered', err);
     }
+    setStep(step + 1);
+  };
 
-    const { subject, body } = formatQuoteEmail({
+  const handlePrev = () => {
+    setStep(step - 1);
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const estimate = calculateEstimate();
+
+    sendQuoteEmail({
       name: formData.name,
+      company: formData.company,
       email: formData.email,
-      businessName: formData.businessName,
-      deliverableVolume: volume,
-      managementLevel: management === 'full' ? 'Full Retainer & Intentional Management' : 'Filming, 3D & Post-Production Only',
-      servicesSelected: selectedServices,
+      phone: formData.phone,
+      services: services.join(', '),
+      volume: `${volume} Assets / Month (${isRetainer ? 'Monthly Retainer' : 'One-Time Project'})`,
+      estimateRange: `$${estimate.min} - $${estimate.max}`,
       notes: formData.notes,
     });
 
-    setSubmitted(true);
-    setToastMessage('Opening your email client to send your custom proposal request...');
-
-    setTimeout(() => {
-      triggerMailto(subject, body);
-    }, 600);
+    setToastMessage('Redirecting to mail client to transmit custom scope request...');
+    setTimeout(() => setToastMessage(null), 5000);
   };
+
+  const estimate = calculateEstimate();
 
   return (
     <section id="quote-builder" className="py-28 px-6 relative z-10">
       <div className="max-w-4xl mx-auto">
-        {/* Section Title */}
+        {/* Header */}
         <div className="text-center mb-16">
           <motion.span
             initial={{ opacity: 0, y: 15 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-xs font-bold uppercase tracking-widest text-[#FFB6D9] mb-3 block"
+            className="text-xs font-black uppercase tracking-widest text-[#D83685] mb-3 block"
           >
             Interactive Scope Engine
           </motion.span>
@@ -102,50 +135,31 @@ export const QuoteBuilder: React.FC = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className="text-4xl sm:text-5xl font-extrabold mb-4"
+            className="text-4xl sm:text-5xl font-black mb-6 text-[#1A1626]"
           >
-            Build Your Custom <span className="gradient-text">Agency Scope</span>
+            Configure Your Custom <br />
+            <span className="gradient-text">Retainer & Scope Estimate</span>
           </motion.h2>
 
-          <p className="text-gray-300 text-base sm:text-lg max-w-xl mx-auto">
-            Configure your deliverables, filming options, 3D assets, and custom modules to generate a real-time custom scope.
-          </p>
+          {/* Progress Indicator */}
+          <div className="flex items-center justify-center gap-4 max-w-xs mx-auto mt-8">
+            {[1, 2, 3, 4].map((i) => (
+              <div
+                key={i}
+                className={`h-2.5 rounded-full transition-all duration-500 ${
+                  step >= i
+                    ? 'w-12 bg-gradient-to-r from-[#FF94C7] to-[#7C3AED]'
+                    : 'w-4 bg-[#FFB6D9]/40'
+                }`}
+              />
+            ))}
+          </div>
         </div>
 
         {/* Wizard Container */}
-        <div className="glass-card rounded-3xl p-6 sm:p-10 border border-[#FFB6D9]/30 relative shadow-2xl">
-          {/* Progress Header */}
-          <div className="mb-10">
-            <div className="flex justify-between items-center mb-3">
-              <span className="text-xs font-bold uppercase tracking-widest text-[#FFB6D9]">
-                Step 0{step} of 04
-              </span>
-              <span className="text-xs font-medium text-gray-400">
-                Est. Monthly Scope: <strong className="text-white">${estimatedMin.toLocaleString()} – ${estimatedMax.toLocaleString()}</strong>
-              </span>
-            </div>
-
-            {/* Progress Bar */}
-            <div className="w-full h-2 bg-white/10 rounded-full overflow-hidden">
-              <motion.div
-                className="h-full bg-gradient-to-r from-[#FFB6D9] via-[#E5D4FF] to-[#C2FFE5]"
-                initial={{ width: '25%' }}
-                animate={{ width: `${(step / 4) * 100}%` }}
-                transition={{ duration: 0.3 }}
-              />
-            </div>
-          </div>
-
-          {/* Toast Notice */}
-          {toastMessage && (
-            <div className="mb-6 p-4 rounded-2xl bg-[#FFB6D9]/15 border border-[#FFB6D9] text-[#FFB6D9] text-sm font-semibold flex items-center gap-3">
-              <Sparkles className="w-5 h-5 shrink-0 animate-spin" />
-              <span>{toastMessage}</span>
-            </div>
-          )}
-
-          {/* Step Contents */}
+        <div className="glass-card p-8 sm:p-12 rounded-3xl border border-[#FFB6D9] shadow-2xl relative overflow-hidden">
           <AnimatePresence mode="wait">
+            {/* STEP 1: Volume & Retainer Type */}
             {step === 1 && (
               <motion.div
                 key="step1"
@@ -154,17 +168,52 @@ export const QuoteBuilder: React.FC = () => {
                 exit={{ opacity: 0, x: -20 }}
                 className="space-y-8"
               >
-                <div className="flex items-center gap-3 text-xl font-bold text-white">
-                  <Sliders className="w-6 h-6 text-[#FFB6D9]" />
-                  <h3>Select Monthly Deliverables Volume</h3>
+                <div>
+                  <h3 className="text-2xl font-black text-[#1A1626] mb-2">
+                    Step 1: Deliverable Volume & Model
+                  </h3>
+                  <p className="text-[#4A4259] text-sm font-medium">
+                    Adjust the monthly asset volume slider to set your required content output.
+                  </p>
                 </div>
 
-                {/* Range Slider */}
-                <div className="glass-card p-6 rounded-2xl border border-white/10">
-                  <div className="flex justify-between items-center mb-4">
-                    <span className="text-sm font-medium text-gray-300">Deliverables Target</span>
-                    <span className="text-3xl font-black text-[#FFB6D9]">{volume} Assets / mo</span>
+                {/* Retainer Toggle */}
+                <div className="flex items-center justify-center gap-4 p-2 rounded-full glass-card border border-[#FFB6D9]/50 max-w-sm mx-auto">
+                  <button
+                    type="button"
+                    onClick={() => setIsRetainer(true)}
+                    className={`flex-1 py-2.5 rounded-full text-xs font-black transition-all ${
+                      isRetainer
+                        ? 'bg-gradient-to-r from-[#FF94C7] to-[#D4B8FF] text-[#1A1626] shadow-md'
+                        : 'text-[#4A4259]'
+                    }`}
+                  >
+                    Monthly Retainer
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setIsRetainer(false)}
+                    className={`flex-1 py-2.5 rounded-full text-xs font-black transition-all ${
+                      !isRetainer
+                        ? 'bg-gradient-to-r from-[#FF94C7] to-[#D4B8FF] text-[#1A1626] shadow-md'
+                        : 'text-[#4A4259]'
+                    }`}
+                  >
+                    One-Time Project
+                  </button>
+                </div>
+
+                {/* Slider */}
+                <div className="p-8 rounded-2xl glass-card border border-[#FFB6D9]/40 space-y-6">
+                  <div className="flex justify-between items-center">
+                    <span className="text-xs font-black text-[#D83685] uppercase tracking-wider">
+                      Target Monthly Asset Output
+                    </span>
+                    <span className="text-3xl font-black text-[#1A1626]">
+                      {volume} <span className="text-xs font-bold text-[#4A4259]">Assets/mo</span>
+                    </span>
                   </div>
+
                   <input
                     type="range"
                     min="4"
@@ -172,242 +221,288 @@ export const QuoteBuilder: React.FC = () => {
                     step="2"
                     value={volume}
                     onChange={(e) => setVolume(parseInt(e.target.value))}
-                    className="w-full h-3 bg-white/10 rounded-lg appearance-none cursor-pointer accent-[#FFB6D9]"
+                    className="w-full h-3 bg-[#FFB6D9]/40 rounded-lg appearance-none cursor-pointer accent-[#D83685]"
                   />
-                  <div className="flex justify-between text-xs text-gray-500 mt-2 font-mono">
-                    <span>4 (Boutique)</span>
-                    <span>20 (Growth)</span>
-                    <span>60+ (Enterprise)</span>
+
+                  <div className="flex justify-between text-[11px] font-bold text-[#4A4259]">
+                    <span>4 Assets (Baseline)</span>
+                    <span>24 Assets (Standard)</span>
+                    <span>60+ Assets (Full Scale)</span>
                   </div>
                 </div>
 
-                {/* Management Level Toggle */}
-                <div>
-                  <label className="text-sm font-semibold text-gray-300 block mb-3">Service Focus Model</label>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <button
-                      type="button"
-                      onClick={() => setManagement('production')}
-                      className={`p-5 rounded-2xl border text-left transition-all ${
-                        management === 'production'
-                          ? 'border-[#FFB6D9] bg-[#FFB6D9]/15 shadow-lg'
-                          : 'border-white/10 glass-card opacity-70 hover:opacity-100'
-                      }`}
-                    >
-                      <h4 className="font-bold text-white mb-1">Filming, 3D & Post-Production Only</h4>
-                      <p className="text-xs text-gray-300">We shoot, script, render 3D assets, and edit content for your team.</p>
-                    </button>
-
-                    <button
-                      type="button"
-                      onClick={() => setManagement('full')}
-                      className={`p-5 rounded-2xl border text-left transition-all ${
-                        management === 'full'
-                          ? 'border-[#FFB6D9] bg-[#FFB6D9]/15 shadow-lg'
-                          : 'border-white/10 glass-card opacity-70 hover:opacity-100'
-                      }`}
-                    >
-                      <h4 className="font-bold text-white mb-1">Full Retainer & Intentional SMM</h4>
-                      <p className="text-xs text-gray-300">We direct filming, edit content, manage social calendars, and build community.</p>
-                    </button>
-                  </div>
+                <div className="flex justify-end pt-4">
+                  <button
+                    type="button"
+                    onClick={handleNext}
+                    className="px-8 py-3.5 rounded-full bg-gradient-to-r from-[#FF94C7] via-[#D4B8FF] to-[#99FFE0] text-[#1A1626] font-black text-xs flex items-center gap-2 hover:scale-105 transition-all shadow-lg cursor-pointer"
+                  >
+                    <span>Next: Select Services</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </button>
                 </div>
               </motion.div>
             )}
 
+            {/* STEP 2: Service Checklist */}
             {step === 2 && (
               <motion.div
                 key="step2"
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -20 }}
-                className="space-y-6"
+                className="space-y-8"
               >
-                <div className="flex items-center gap-3 text-xl font-bold text-white">
-                  <CheckSquare className="w-6 h-6 text-[#E5D4FF]" />
-                  <h3>Select Required Services & Modules</h3>
+                <div>
+                  <h3 className="text-2xl font-black text-[#1A1626] mb-2">
+                    Step 2: Core Capability Matrix
+                  </h3>
+                  <p className="text-[#4A4259] text-sm font-medium">
+                    Select all capabilities you need included in your custom retainer.
+                  </p>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {availableServices.map((service) => {
-                    const isSelected = selectedServices.includes(service);
+                    const isSelected = services.includes(service.name);
                     return (
                       <button
-                        key={service}
+                        key={service.name}
                         type="button"
-                        onClick={() => toggleService(service)}
-                        className={`p-4 rounded-xl border text-left transition-all flex items-center justify-between ${
+                        onClick={() => toggleService(service.name)}
+                        className={`p-5 rounded-2xl border text-left flex items-start gap-4 transition-all cursor-pointer ${
                           isSelected
-                            ? 'border-[#E5D4FF] bg-[#E5D4FF]/15 text-white font-semibold'
-                            : 'border-white/10 glass-card text-gray-300 hover:text-white'
+                            ? 'bg-gradient-to-r from-[#FFB6D9]/30 to-[#E5D4FF]/30 border-[#D83685] shadow-md scale-[1.02]'
+                            : 'glass-card border-[#FFB6D9]/40 hover:border-[#D83685]'
                         }`}
                       >
-                        <span className="text-sm">{service}</span>
                         <div
-                          className={`w-5 h-5 rounded-md border flex items-center justify-center ${
-                            isSelected ? 'border-[#E5D4FF] bg-[#E5D4FF] text-[#0D0B14]' : 'border-white/30'
+                          className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${
+                            isSelected ? 'bg-[#D83685] text-white' : 'bg-[#FFB6D9]/20 text-[#D83685]'
                           }`}
                         >
-                          {isSelected && <CheckCircle className="w-3.5 h-3.5" />}
+                          <service.icon className="w-5 h-5" />
+                        </div>
+                        <div>
+                          <h4 className="text-sm font-black text-[#1A1626] mb-1">
+                            {service.name}
+                          </h4>
+                          <span className="text-[11px] font-bold text-[#D83685]">
+                            {isSelected ? 'Selected' : '+ Add to Scope'}
+                          </span>
                         </div>
                       </button>
                     );
                   })}
                 </div>
+
+                <div className="flex justify-between pt-4">
+                  <button
+                    type="button"
+                    onClick={handlePrev}
+                    className="px-6 py-3 rounded-full glass-card border border-[#FFB6D9] text-[#1A1626] font-bold text-xs flex items-center gap-2 hover:bg-[#FFB6D9]/20 transition-all cursor-pointer"
+                  >
+                    <ArrowLeft className="w-4 h-4" />
+                    <span>Back</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={handleNext}
+                    disabled={services.length === 0}
+                    className="px-8 py-3.5 rounded-full bg-gradient-to-r from-[#FF94C7] via-[#D4B8FF] to-[#99FFE0] text-[#1A1626] font-black text-xs flex items-center gap-2 hover:scale-105 transition-all shadow-lg cursor-pointer disabled:opacity-50"
+                  >
+                    <span>Next: Business Details</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </button>
+                </div>
               </motion.div>
             )}
 
+            {/* STEP 3: Business & Contact Info */}
             {step === 3 && (
               <motion.div
                 key="step3"
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -20 }}
-                className="space-y-6"
+                className="space-y-8"
               >
-                <div className="flex items-center gap-3 text-xl font-bold text-white">
-                  <User className="w-6 h-6 text-[#FFD4C2]" />
-                  <h3>Your Contact & Business Profile</h3>
+                <div>
+                  <h3 className="text-2xl font-black text-[#1A1626] mb-2">
+                    Step 3: Executive Profile
+                  </h3>
+                  <p className="text-[#4A4259] text-sm font-medium">
+                    Enter your contact channels so we can deliver your custom presentation deck.
+                  </p>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                   <div>
-                    <label className="text-xs font-semibold text-gray-300 mb-1 block">Full Name *</label>
-                    <input
-                      type="text"
-                      placeholder="e.g. Sarah Jenkins"
-                      value={formData.name}
-                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:border-[#FFB6D9] focus:outline-none"
-                    />
+                    <label className="text-xs font-black text-[#D83685] uppercase tracking-wider block mb-2">
+                      Full Name *
+                    </label>
+                    <div className="relative">
+                      <User className="w-4 h-4 absolute left-4 top-3.5 text-[#D83685]" />
+                      <input
+                        type="text"
+                        required
+                        value={formData.name}
+                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                        placeholder="Isaiah Chandler"
+                        className="w-full pl-11 pr-4 py-3 rounded-2xl glass-card border border-[#FFB6D9] text-[#1A1626] font-bold text-sm focus:outline-none focus:border-[#D83685]"
+                      />
+                    </div>
                   </div>
 
                   <div>
-                    <label className="text-xs font-semibold text-gray-300 mb-1 block">Email Address *</label>
-                    <input
-                      type="email"
-                      placeholder="sarah@yourbrand.com"
-                      value={formData.email}
-                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:border-[#FFB6D9] focus:outline-none"
-                    />
+                    <label className="text-xs font-black text-[#D83685] uppercase tracking-wider block mb-2">
+                      Company / Brand Name *
+                    </label>
+                    <div className="relative">
+                      <Building2 className="w-4 h-4 absolute left-4 top-3.5 text-[#D83685]" />
+                      <input
+                        type="text"
+                        required
+                        value={formData.company}
+                        onChange={(e) => setFormData({ ...formData, company: e.target.value })}
+                        placeholder="Soul Media Partner"
+                        className="w-full pl-11 pr-4 py-3 rounded-2xl glass-card border border-[#FFB6D9] text-[#1A1626] font-bold text-sm focus:outline-none focus:border-[#D83685]"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="text-xs font-black text-[#D83685] uppercase tracking-wider block mb-2">
+                      Work Email *
+                    </label>
+                    <div className="relative">
+                      <Mail className="w-4 h-4 absolute left-4 top-3.5 text-[#D83685]" />
+                      <input
+                        type="email"
+                        required
+                        value={formData.email}
+                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                        placeholder="isaiah@brand.com"
+                        className="w-full pl-11 pr-4 py-3 rounded-2xl glass-card border border-[#FFB6D9] text-[#1A1626] font-bold text-sm focus:outline-none focus:border-[#D83685]"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="text-xs font-black text-[#D83685] uppercase tracking-wider block mb-2">
+                      Phone Number (Optional)
+                    </label>
+                    <div className="relative">
+                      <Phone className="w-4 h-4 absolute left-4 top-3.5 text-[#D83685]" />
+                      <input
+                        type="tel"
+                        value={formData.phone}
+                        onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                        placeholder="(813) 555-0199"
+                        className="w-full pl-11 pr-4 py-3 rounded-2xl glass-card border border-[#FFB6D9] text-[#1A1626] font-bold text-sm focus:outline-none focus:border-[#D83685]"
+                      />
+                    </div>
                   </div>
                 </div>
 
                 <div>
-                  <label className="text-xs font-semibold text-gray-300 mb-1 block">Brand or Company Name</label>
-                  <input
-                    type="text"
-                    placeholder="e.g. Apex Apparel Co."
-                    value={formData.businessName}
-                    onChange={(e) => setFormData({ ...formData, businessName: e.target.value })}
-                    className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:border-[#FFB6D9] focus:outline-none"
-                  />
-                </div>
-
-                <div>
-                  <label className="text-xs font-semibold text-gray-300 mb-1 block">Project Vision & Location Notes</label>
+                  <label className="text-xs font-black text-[#D83685] uppercase tracking-wider block mb-2">
+                    Additional Project Notes or Goals
+                  </label>
                   <textarea
                     rows={3}
-                    placeholder="Describe your current content goals, filming location (e.g. Tampa/Clearwater or Remote), 3D asset needs..."
                     value={formData.notes}
                     onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
-                    className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:border-[#FFB6D9] focus:outline-none"
+                    placeholder="Tell us about your upcoming campaign or filming goals..."
+                    className="w-full p-4 rounded-2xl glass-card border border-[#FFB6D9] text-[#1A1626] font-bold text-sm focus:outline-none focus:border-[#D83685]"
                   />
+                </div>
+
+                <div className="flex justify-between pt-4">
+                  <button
+                    type="button"
+                    onClick={handlePrev}
+                    className="px-6 py-3 rounded-full glass-card border border-[#FFB6D9] text-[#1A1626] font-bold text-xs flex items-center gap-2 hover:bg-[#FFB6D9]/20 transition-all cursor-pointer"
+                  >
+                    <ArrowLeft className="w-4 h-4" />
+                    <span>Back</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={handleNext}
+                    disabled={!formData.name || !formData.email}
+                    className="px-8 py-3.5 rounded-full bg-gradient-to-r from-[#FF94C7] via-[#D4B8FF] to-[#99FFE0] text-[#1A1626] font-black text-xs flex items-center gap-2 hover:scale-105 transition-all shadow-lg cursor-pointer disabled:opacity-50"
+                  >
+                    <span>Calculate Final Estimate</span>
+                    <Calculator className="w-4 h-4" />
+                  </button>
                 </div>
               </motion.div>
             )}
 
+            {/* STEP 4: Estimate & Submission */}
             {step === 4 && (
               <motion.div
                 key="step4"
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -20 }}
-                className="space-y-6"
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                className="space-y-8 text-center"
               >
-                <div className="flex items-center gap-3 text-xl font-bold text-white">
-                  <Send className="w-6 h-6 text-[#C2FFE5]" />
-                  <h3>Review & Submit Proposal Request</h3>
+                <div className="w-16 h-16 rounded-full bg-gradient-to-r from-[#FF94C7] to-[#99FFE0] flex items-center justify-center mx-auto text-[#1A1626] shadow-xl animate-bounce">
+                  <Sparkles className="w-8 h-8" />
                 </div>
 
-                <div className="glass-card p-6 rounded-2xl border border-white/10 space-y-4 text-sm text-gray-200">
-                  <div className="flex justify-between border-b border-white/10 pb-2">
-                    <span className="text-gray-400">Client:</span>
-                    <span className="font-semibold text-white">{formData.name || 'Not provided'} ({formData.email})</span>
-                  </div>
-
-                  <div className="flex justify-between border-b border-white/10 pb-2">
-                    <span className="text-gray-400">Monthly Volume:</span>
-                    <span className="font-semibold text-white">{volume} Assets / Month</span>
-                  </div>
-
-                  <div className="flex justify-between border-b border-white/10 pb-2">
-                    <span className="text-gray-400">Service Focus:</span>
-                    <span className="font-semibold text-white">
-                      {management === 'full' ? 'Full Retainer & SMM' : 'Filming, 3D & Post-Production Only'}
-                    </span>
-                  </div>
-
-                  <div>
-                    <span className="text-gray-400 block mb-1">Selected Services:</span>
-                    <div className="flex flex-wrap gap-2">
-                      {selectedServices.map((s) => (
-                        <span key={s} className="px-2.5 py-1 rounded-full bg-white/10 text-xs text-[#FFB6D9]">
-                          {s}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div className="p-4 rounded-xl bg-[#C2FFE5]/10 border border-[#C2FFE5]/30 text-[#C2FFE5] text-center">
-                    <span className="text-xs uppercase font-bold tracking-widest block mb-1">Estimated Monthly Scope</span>
-                    <span className="text-3xl font-black">${estimatedMin.toLocaleString()} – ${estimatedMax.toLocaleString()} / mo</span>
-                  </div>
+                <div>
+                  <span className="text-xs font-black uppercase tracking-widest text-[#D83685] mb-2 block">
+                    Custom Scope Calculated
+                  </span>
+                  <h3 className="text-3xl font-black text-[#1A1626]">
+                    Estimated Retainer Investment Range
+                  </h3>
                 </div>
 
-                {submitted && (
-                  <div className="p-4 rounded-xl bg-emerald-500/20 border border-emerald-500 text-emerald-300 text-center text-sm font-semibold">
-                    ✨ Your request has been formatted! If your email app did not open automatically, please send your email directly to <strong>soulmediagroup.info@gmail.com</strong>.
+                <div className="p-8 rounded-3xl bg-gradient-to-r from-[#FFB6D9]/30 via-[#E5D4FF]/30 to-[#C2FFE5]/30 border border-[#D83685] shadow-xl max-w-lg mx-auto">
+                  <span className="text-4xl sm:text-6xl font-black text-[#1A1626] block mb-2">
+                    ${estimate.min} - ${estimate.max}
+                  </span>
+                  <span className="text-xs font-extrabold text-[#D83685] uppercase tracking-wider">
+                    {isRetainer ? 'Estimated Monthly Retainer' : 'Estimated One-Time Project Investment'}
+                  </span>
+                </div>
+
+                <div className="p-6 rounded-2xl glass-card border border-[#FFB6D9]/40 text-left max-w-xl mx-auto space-y-3">
+                  <h4 className="text-xs font-black text-[#D83685] uppercase tracking-wider">
+                    Scope Summary:
+                  </h4>
+                  <p className="text-xs font-bold text-[#1A1626]">
+                    • <strong>Volume</strong>: {volume} Assets/month ({isRetainer ? 'Retainer' : 'One-Time'})
+                  </p>
+                  <p className="text-xs font-bold text-[#1A1626]">
+                    • <strong>Services</strong>: {services.join(', ')}
+                  </p>
+                </div>
+
+                <form onSubmit={handleSubmit} className="pt-4">
+                  <button
+                    type="submit"
+                    className="w-full sm:w-auto px-10 py-4 rounded-full bg-gradient-to-r from-[#FF94C7] via-[#D4B8FF] to-[#99FFE0] text-[#1A1626] font-black text-sm flex items-center justify-center gap-3 mx-auto hover:scale-105 transition-all shadow-xl cursor-pointer"
+                  >
+                    <Send className="w-4 h-4" />
+                    <span>Transmit Scope to Executive Team</span>
+                  </button>
+                </form>
+
+                {toastMessage && (
+                  <div className="p-4 rounded-2xl bg-[#C2FFE5]/40 border border-[#059669] text-[#059669] text-xs font-bold">
+                    {toastMessage}
                   </div>
                 )}
               </motion.div>
             )}
           </AnimatePresence>
-
-          {/* Navigation Controls */}
-          <div className="flex justify-between items-center mt-10 pt-6 border-t border-white/10">
-            {step > 1 ? (
-              <button
-                type="button"
-                onClick={() => setStep(step - 1)}
-                className="flex items-center gap-2 px-5 py-2.5 rounded-full glass-card text-xs font-semibold text-gray-300 hover:text-white transition-all"
-              >
-                <ArrowLeft className="w-4 h-4" />
-                <span>Back</span>
-              </button>
-            ) : <div />}
-
-            {step < 4 ? (
-              <button
-                type="button"
-                onClick={() => setStep(step + 1)}
-                className="flex items-center gap-2 px-7 py-3 rounded-full bg-gradient-to-r from-[#FFB6D9] to-[#E5D4FF] text-[#0D0B14] font-bold text-sm hover:scale-105 transition-transform shadow-lg"
-              >
-                <span>Continue Step 0{step + 1}</span>
-                <ArrowRight className="w-4 h-4" />
-              </button>
-            ) : (
-              <button
-                type="button"
-                onClick={handleSubmit}
-                className="flex items-center gap-2 px-8 py-3.5 rounded-full bg-gradient-to-r from-[#FFB6D9] via-[#E5D4FF] to-[#C2FFE5] text-[#0D0B14] font-extrabold text-base hover:shadow-[0_0_30px_rgba(255,182,217,0.5)] transition-all shadow-xl"
-              >
-                <Sparkles className="w-5 h-5" />
-                <span>Send Strategy Proposal Request</span>
-              </button>
-            )}
-          </div>
         </div>
       </div>
     </section>

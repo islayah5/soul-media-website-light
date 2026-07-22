@@ -1,59 +1,38 @@
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Star, Quote, ChevronLeft, ChevronRight } from 'lucide-react';
+import React from 'react';
+import { motion } from 'framer-motion';
+import { Star, Quote } from 'lucide-react';
 
 export const Testimonials: React.FC = () => {
-  const testimonials = [
+  const reviews = [
     {
-      quote: "Soul Media transformed our entire content strategy. Joe's video production quality is Hollywood-grade, and Isaiah's pipeline delivered 24 videos a month without us lifting a finger.",
-      clientName: "Marcus Vance",
-      company: "CEO, Vanguard Fitness",
-      result: "+4.8M Organic Views in 60 Days",
+      quote: "Soul Media transformed our brand presence completely. The cinematic quality of their video shoots combined with their 3D web work gave us an unmatched competitive edge.",
+      author: 'Marcus Vance',
+      role: 'CEO, Vance Tech Ventures',
       rating: 5,
     },
     {
-      quote: "Jada and her team understood our brand core better than we did. Their positioning and campaign execution brought us $380k in trackable new revenue within our first quarter.",
-      clientName: "Elena Rostova",
-      company: "Founder, Luxe Skincare Co.",
-      result: "3.8x ROAS on Meta & TikTok",
+      quote: "Working with Jada, Isaiah, and Joe is an absolute dream. Their operational efficiency and content pipelines allow us to post consistently without stress.",
+      author: 'Elena Rostova',
+      role: 'Founder, Solstice Activewear',
       rating: 5,
     },
     {
-      quote: "Working with Soul Media felt like having an elite $50k/month in-house media team. They set up our remote SMM and handled all video shoots flawlessly.",
-      clientName: "David Sterling",
-      company: "Managing Director, Sterling Capital",
-      result: "Retainer Extended 2 Years",
+      quote: "The 3D web modeling and custom scope intake calculator increased our qualified leads immediately. Truly best-in-class technical and creative partners.",
+      author: 'David Sterling',
+      role: 'Managing Director, Sterling Group',
       rating: 5,
     },
   ];
 
-  const [currentIndex, setCurrentIndex] = useState(0);
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % testimonials.length);
-    }, 7000);
-    return () => clearInterval(timer);
-  }, [testimonials.length]);
-
-  const handleNext = () => {
-    setCurrentIndex((prev) => (prev + 1) % testimonials.length);
-  };
-
-  const handlePrev = () => {
-    setCurrentIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length);
-  };
-
   return (
-    <section className="py-28 px-6 relative z-10 bg-[#0A0810]/40">
-      <div className="max-w-5xl mx-auto">
-        {/* Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16">
+    <section className="py-28 px-6 relative z-10 bg-[#FFF5F8]/80">
+      <div className="max-w-7xl mx-auto">
+        <div className="text-center max-w-3xl mx-auto mb-20">
           <motion.span
             initial={{ opacity: 0, y: 15 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-xs font-bold uppercase tracking-widest text-[#FFB6D9] mb-3 block"
+            className="text-xs font-black uppercase tracking-widest text-[#D83685] mb-3 block"
           >
             Client Endorsements
           </motion.span>
@@ -63,75 +42,40 @@ export const Testimonials: React.FC = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className="text-4xl sm:text-5xl font-extrabold mb-4"
+            className="text-4xl sm:text-5xl font-black mb-6 text-[#1A1626]"
           >
-            Trusted by Brands That <br />
-            <span className="gradient-text">Demand Perfection</span>
+            Trusted by Visionary <br />
+            <span className="gradient-text">Founders & Brands</span>
           </motion.h2>
         </div>
 
-        {/* Testimonial Card Slider */}
-        <div className="glass-card rounded-3xl p-8 sm:p-14 border border-[#FFB6D9]/30 relative shadow-2xl overflow-hidden">
-          <Quote className="w-20 h-20 text-[#FFB6D9]/10 absolute -top-4 -left-4 pointer-events-none" />
-
-          <AnimatePresence mode="wait">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {reviews.map((rev, i) => (
             <motion.div
-              key={currentIndex}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.4 }}
-              className="relative z-10 flex flex-col justify-between min-h-[220px]"
+              key={rev.author}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.15 }}
+              className="glass-card glass-card-hover rounded-3xl p-8 border border-[#FFB6D9]/50 shadow-xl flex flex-col justify-between"
             >
               <div>
-                {/* Rating Stars */}
-                <div className="flex gap-1 mb-6 text-[#FFB6D9]">
-                  {[...Array(testimonials[currentIndex].rating)].map((_, i) => (
-                    <Star key={i} className="w-5 h-5 fill-current" />
+                <div className="flex gap-1 mb-6 text-[#D83685]">
+                  {[...Array(rev.rating)].map((_, idx) => (
+                    <Star key={idx} className="w-5 h-5 fill-current" />
                   ))}
                 </div>
-
-                {/* Quote Body */}
-                <p className="text-xl sm:text-2xl text-gray-100 font-medium leading-relaxed mb-8 italic">
-                  "{testimonials[currentIndex].quote}"
+                <p className="text-[#4A4259] text-sm font-medium leading-relaxed mb-6 italic">
+                  "{rev.quote}"
                 </p>
               </div>
 
-              {/* Author Footer */}
-              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between border-t border-white/10 pt-6 gap-4">
-                <div>
-                  <h4 className="text-lg font-extrabold text-white">
-                    {testimonials[currentIndex].clientName}
-                  </h4>
-                  <span className="text-xs text-gray-400">
-                    {testimonials[currentIndex].company}
-                  </span>
-                </div>
-
-                <div className="px-3.5 py-1.5 rounded-full bg-[#C2FFE5]/15 border border-[#C2FFE5]/30 text-[#C2FFE5] text-xs font-bold">
-                  {testimonials[currentIndex].result}
-                </div>
+              <div className="pt-4 border-t border-[#FFB6D9]/30">
+                <h4 className="text-base font-black text-[#1A1626]">{rev.author}</h4>
+                <span className="text-xs font-bold text-[#D83685]">{rev.role}</span>
               </div>
             </motion.div>
-          </AnimatePresence>
-
-          {/* Nav Buttons */}
-          <div className="flex items-center gap-3 absolute bottom-6 right-6 z-20">
-            <button
-              onClick={handlePrev}
-              className="p-2.5 rounded-full glass-card text-white hover:text-[#FFB6D9] border border-white/20 transition-all"
-              aria-label="Previous testimonial"
-            >
-              <ChevronLeft className="w-5 h-5" />
-            </button>
-            <button
-              onClick={handleNext}
-              className="p-2.5 rounded-full glass-card text-white hover:text-[#FFB6D9] border border-white/20 transition-all"
-              aria-label="Next testimonial"
-            >
-              <ChevronRight className="w-5 h-5" />
-            </button>
-          </div>
+          ))}
         </div>
       </div>
     </section>

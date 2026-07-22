@@ -1,105 +1,67 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Logo } from './Logo';
-import { Sparkles, ArrowRight, Check } from 'lucide-react';
+import { ArrowUp, Instagram, Linkedin, Youtube, Film, MapPin, Heart } from 'lucide-react';
 
 export const Footer: React.FC = () => {
-  const [newsletterEmail, setNewsletterEmail] = useState('');
-  const [subscribed, setSubscribed] = useState(false);
-
-  const handleSubscribe = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!newsletterEmail) return;
-    setSubscribed(true);
-    setNewsletterEmail('');
-    setTimeout(() => setSubscribed(false), 5000);
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (
-    <footer className="pt-20 pb-12 px-6 relative z-10 border-t border-white/10 bg-[#0A0810]">
+    <footer className="relative z-10 border-t border-[#FFB6D9]/40 bg-[#FFF5F8]/90 pt-16 pb-12 px-6">
       <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-10 mb-16">
-          {/* Col 1: Brand & Status */}
-          <div className="md:col-span-1 space-y-4">
-            <a href="#home" className="inline-block">
-              <Logo width={170} height={60} />
-            </a>
-            <p className="text-xs text-gray-400 leading-relaxed">
-              High-impact media production, intentional community engagement, and smart operational systems built to make your brand undeniable.
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-10 mb-12">
+          {/* Col 1: Brand Info */}
+          <div className="md:col-span-2 space-y-4">
+            <Logo width={160} height={55} />
+            <p className="text-[#4A4259] text-sm max-w-md font-medium leading-relaxed">
+              Soul Media is a premier video production, 3D web modeling, and visual brand agency headquartered in Tampa Bay, Florida.
             </p>
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#C2FFE5]/10 border border-[#C2FFE5]/30 text-[#C2FFE5] text-xs font-semibold">
-              <span className="w-2 h-2 rounded-full bg-[#C2FFE5] animate-ping" />
-              <span>Accepting Select Clients Q4</span>
+            <div className="flex items-center gap-3 text-xs font-black text-[#D83685]">
+              <MapPin className="w-4 h-4 text-[#D83685]" />
+              <span>Tampa Bay • Clearwater • St. Petersburg, FL HQ</span>
             </div>
           </div>
 
-          {/* Col 2: Navigation */}
+          {/* Col 2: Navigation Links */}
           <div>
-            <h4 className="text-sm font-bold text-white uppercase tracking-wider mb-4">Navigation</h4>
-            <ul className="space-y-2.5 text-xs text-gray-400">
-              <li><a href="#home" className="hover:text-[#FFB6D9] transition-colors">Home</a></li>
-              <li><a href="#about" className="hover:text-[#FFB6D9] transition-colors">About Agency</a></li>
-              <li><a href="#services" className="hover:text-[#FFB6D9] transition-colors">Capabilities & Services</a></li>
-              <li><a href="#packages" className="hover:text-[#FFB6D9] transition-colors">Packages & Retainers</a></li>
-              <li><a href="#portfolio" className="hover:text-[#FFB6D9] transition-colors">Case Studies</a></li>
-              <li><a href="#team" className="hover:text-[#FFB6D9] transition-colors">Leadership Core</a></li>
+            <h4 className="text-xs font-black uppercase tracking-widest text-[#D83685] mb-4">
+              Quick Navigation
+            </h4>
+            <ul className="space-y-2.5 text-xs font-bold text-[#1A1626]">
+              <li><a href="#home" className="hover:text-[#D83685] transition-colors">Home</a></li>
+              <li><a href="#about" className="hover:text-[#D83685] transition-colors">About Us</a></li>
+              <li><a href="#services" className="hover:text-[#D83685] transition-colors">Capabilities</a></li>
+              <li><a href="#packages" className="hover:text-[#D83685] transition-colors">Investment Packages</a></li>
+              <li><a href="#portfolio" className="hover:text-[#D83685] transition-colors">Case Studies</a></li>
+              <li><a href="#team" className="hover:text-[#D83685] transition-colors">Leadership Team</a></li>
             </ul>
           </div>
 
-          {/* Col 3: Capabilities */}
+          {/* Col 3: Leadership Core */}
           <div>
-            <h4 className="text-sm font-bold text-white uppercase tracking-wider mb-4">Capabilities</h4>
-            <ul className="space-y-2.5 text-xs text-gray-400">
-              <li><span className="hover:text-white transition-colors">On-Location Directing & Filming</span></li>
-              <li><span className="hover:text-white transition-colors">Post-Production & Visual Editing</span></li>
-              <li><span className="hover:text-white transition-colors">Intentional Social Management</span></li>
-              <li><span className="hover:text-white transition-colors">Ad Creative & Campaign Strategy</span></li>
-              <li><span className="hover:text-white transition-colors">Talent Sourcing & Training Advisory</span></li>
-              <li><span className="hover:text-white transition-colors">Modern Web & Tech Solutions</span></li>
+            <h4 className="text-xs font-black uppercase tracking-widest text-[#D83685] mb-4">
+              Executive Leadership
+            </h4>
+            <ul className="space-y-2 text-xs font-bold text-[#1A1626]">
+              <li className="text-[#1A1626]"><strong>Jada Brown</strong> — Founder & Producer</li>
+              <li className="text-[#1A1626]"><strong>Isaiah Chandler</strong> — Ops & Systems Lead</li>
+              <li className="text-[#1A1626]"><strong>Joe Irizarry</strong> — Director of Photography</li>
             </ul>
-          </div>
-
-          {/* Col 4: Newsletter */}
-          <div>
-            <h4 className="text-sm font-bold text-white uppercase tracking-wider mb-4">Executive Briefing</h4>
-            <p className="text-xs text-gray-400 mb-4 leading-relaxed">
-              Subscribe to our monthly breakdown of high-performing media strategies, video hooks, and automation setups.
-            </p>
-
-            {subscribed ? (
-              <div className="p-3 rounded-xl bg-[#C2FFE5]/15 border border-[#C2FFE5] text-[#C2FFE5] text-xs font-semibold flex items-center gap-2">
-                <Check className="w-4 h-4" />
-                <span>Subscribed! Welcome aboard.</span>
-              </div>
-            ) : (
-              <form onSubmit={handleSubscribe} className="flex gap-2">
-                <input
-                  type="email"
-                  placeholder="Enter work email..."
-                  value={newsletterEmail}
-                  onChange={(e) => setNewsletterEmail(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-white/5 border border-white/10 text-xs text-white placeholder-gray-500 focus:border-[#FFB6D9] focus:outline-none"
-                />
-                <button
-                  type="submit"
-                  className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-[#FFB6D9] to-[#E5D4FF] text-[#0D0B14] font-bold text-xs flex items-center justify-center shrink-0 hover:scale-105 transition-transform"
-                >
-                  <ArrowRight className="w-4 h-4" />
-                </button>
-              </form>
-            )}
           </div>
         </div>
 
         {/* Bottom Bar */}
-        <div className="border-t border-white/10 pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-gray-500 gap-4">
-          <p>© {new Date().getFullYear()} Soul Media Group. All rights reserved.</p>
-          <div className="flex items-center gap-6">
-            <a href="mailto:soulmediagroup.info@gmail.com" className="hover:text-gray-300 transition-colors">soulmediagroup.info@gmail.com</a>
-            <a href="#home" className="hover:text-[#FFB6D9] transition-colors flex items-center gap-1">
-              <Sparkles className="w-3 h-3 text-[#FFB6D9]" />
-              <span>Back to top</span>
-            </a>
-          </div>
+        <div className="pt-8 border-t border-[#FFB6D9]/30 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-bold text-[#4A4259]">
+          <p>© {new Date().getFullYear()} Soul Media. All rights reserved.</p>
+          
+          <button
+            onClick={scrollToTop}
+            className="px-4 py-2 rounded-full glass-card border border-[#FFB6D9] text-[#1A1626] hover:border-[#D83685] flex items-center gap-2 transition-all cursor-pointer shadow-sm"
+          >
+            <span>Back to Top</span>
+            <ArrowUp className="w-3.5 h-3.5 text-[#D83685]" />
+          </button>
         </div>
       </div>
     </footer>
