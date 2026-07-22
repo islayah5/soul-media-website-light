@@ -1,0 +1,78 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --pink: #FFB6D9;
+  --lavender: #E5D4FF;
+  --peach: #FFD4C2;
+  --mint: #C2FFE5;
+  --light-bg: #FFF5F8;
+  --dark-text: #1A1626;
+}
+
+body {
+  background-color: #FFF5F8;
+  color: #1A1626;
+  font-family: 'Outfit', 'Inter', sans-serif;
+}
+
+/* Hide OS default cursor on desktop fine-pointer devices for custom ring experience */
+@media (pointer: fine) {
+  body, a, button, input, select, textarea {
+    cursor: none !important;
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #FFF5F8;
+}
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(to bottom, #FFB6D9, #E5D4FF);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #FF80BF;
+}
+
+/* Bubbly Lightmode Glassmorphism Cards */
+.glass-card {
+  background: rgba(255, 255, 255, 0.78);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 182, 217, 0.35);
+  box-shadow: 0 12px 36px 0 rgba(255, 182, 217, 0.18);
+}
+
+.glass-card-hover {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.glass-card-hover:hover {
+  background: rgba(255, 255, 255, 0.92);
+  border-color: rgba(255, 128, 191, 0.5);
+  box-shadow: 0 18px 45px 0 rgba(255, 182, 217, 0.35);
+  transform: translateY(-4px);
+}
+
+.glass-nav {
+  background: rgba(255, 245, 248, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255, 182, 217, 0.3);
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, #1A1626 0%, #D83685 50%, #7C3AED 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gradient-text-gold {
+  background: linear-gradient(135deg, #D83685 0%, #7C3AED 50%, #059669 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
