@@ -12,19 +12,7 @@ export const Hero: React.FC = () => {
   return (
     <section id="home" className="relative min-h-screen flex items-center justify-center pt-32 pb-20 px-6 overflow-hidden">
       <div className="max-w-6xl mx-auto text-center relative z-10">
-        {/* Top Floating Badge */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full glass-card border border-[#FFB6D9] mb-8 shadow-lg shadow-[#FFB6D9]/20"
-        >
-          <span className="w-2.5 h-2.5 rounded-full bg-[#D83685] animate-pulse" />
-          <span className="text-xs md:text-sm font-extrabold tracking-wider uppercase text-[#1A1626]">
-            Light Edition • Next-Gen Media Production & Strategy
-          </span>
-          <Sparkles className="w-4 h-4 text-[#D83685]" />
-        </motion.div>
+
 
         {/* Main Title */}
         <motion.h1

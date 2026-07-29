@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Play, Sparkles, X } from 'lucide-react';
 
+import velvetHorizonImg from '../assets/velvet_horizon_brand.jpg';
+import apexCapitalImg from '../assets/apex_capital_reel.jpg';
+
 export const Portfolio: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [activeVideoUrl, setActiveVideoUrl] = useState<string | null>(null);
@@ -20,7 +23,7 @@ export const Portfolio: React.FC = () => {
     {
       title: 'Velvet Horizon Rebrand & Motion',
       category: 'Brand Strategy',
-      image: 'https://images.unsplash.com/photo-1518173946687-a4c8a383392e?auto=format&fit=crop&q=80&w=1200',
+      image: velvetHorizonImg,
       client: 'Velvet Horizon',
       impact: '3.2x Engagement Surge',
       videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1',
@@ -36,7 +39,7 @@ export const Portfolio: React.FC = () => {
     {
       title: 'High-Volume Executive Reel Series',
       category: 'Short-Form Reels',
-      image: 'https://images.unsplash.com/photo-1536240478700-b869070f9279?auto=format&fit=crop&q=80&w=1200',
+      image: apexCapitalImg,
       client: 'Apex Capital',
       impact: '420K Reach in 14 Days',
       videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1',
@@ -73,27 +76,31 @@ export const Portfolio: React.FC = () => {
             <span className="gradient-text">Visual Directing</span>
           </motion.h2>
 
-          {/* Filter Pills */}
-          <div className="flex flex-wrap justify-center gap-2.5 mt-8 p-2 rounded-full glass-card border border-[#FFB6D9]/50 shadow-md">
-            {categories.map((cat) => (
-              <button
-                key={cat}
-                onClick={() => setSelectedCategory(cat)}
-                className={`px-5 py-2.5 rounded-full text-xs font-black transition-all cursor-pointer ${
-                  selectedCategory === cat
-                    ? 'bg-gradient-to-r from-[#FF94C7] via-[#D4B8FF] to-[#99FFE0] text-[#1A1626] shadow-md scale-105'
-                    : 'text-[#4A4259] hover:text-[#1A1626]'
-                }`}
-              >
-                {cat}
-              </button>
-            ))}
-          </div>
+          <p className="text-[#4A4259] text-lg font-medium">
+            Explore recent commercial productions, motion design, and high-converting brand campaigns.
+          </p>
         </div>
 
-        {/* Case Studies Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <AnimatePresence mode="wait">
+        {/* Category Filters */}
+        <div className="flex flex-wrap items-center justify-center gap-3 mb-12">
+          {categories.map((category) => (
+            <button
+              key={category}
+              onClick={() => setSelectedCategory(category)}
+              className={`px-5 py-2.5 rounded-full text-xs font-black transition-all cursor-pointer ${
+                selectedCategory === category
+                  ? 'bg-[#1A1626] text-white shadow-lg scale-105'
+                  : 'glass-card border border-[#FFB6D9] text-[#1A1626] hover:border-[#D83685]'
+              }`}
+            >
+              {category}
+            </button>
+          ))}
+        </div>
+
+        {/* Portfolio Grid */}
+        <motion.div layout className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <AnimatePresence mode="popLayout">
             {filteredStudies.map((study, idx) => (
               <motion.div
                 key={study.title}
@@ -141,7 +148,7 @@ export const Portfolio: React.FC = () => {
               </motion.div>
             ))}
           </AnimatePresence>
-        </div>
+        </motion.div>
       </div>
 
       {/* Video Lightbox Modal */}

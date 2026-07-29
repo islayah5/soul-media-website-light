@@ -71,10 +71,10 @@ export const CustomCursor: React.FC = () => {
         }}
       >
         <div
-          className={`rounded-full border border-[#FFB6D9]/50 transition-all duration-300 ${
+          className={`rounded-full border transition-all duration-300 ${
             isHovered
-              ? 'w-12 h-12 bg-[#FFB6D9]/15 backdrop-blur-sm border-[#FFB6D9]'
-              : 'w-8 h-8 bg-transparent'
+              ? 'w-12 h-12 bg-[#2D124D]/20 backdrop-blur-sm border-[#2D124D]'
+              : 'w-8 h-8 bg-transparent border-[#2D124D]/60'
           }`}
         />
       </div>
@@ -86,7 +86,7 @@ export const CustomCursor: React.FC = () => {
           transform: `translate3d(${position.x - 3}px, ${position.y - 3}px, 0)`,
         }}
       >
-        <div className="w-1.5 h-1.5 bg-[#FFB6D9] rounded-full shadow-[0_0_8px_#FFB6D9]" />
+        <div className="w-1.5 h-1.5 bg-[#2D124D] rounded-full shadow-[0_0_8px_rgba(45,18,77,0.6)]" />
       </div>
     </>
   );

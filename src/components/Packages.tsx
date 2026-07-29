@@ -207,7 +207,7 @@ export const Packages: React.FC = () => {
 
         {/* Package Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <AnimatePresence mode="wait">
+          <AnimatePresence mode="popLayout">
             {packageData[activeCategory].map((pkg, index) => (
               <motion.div
                 key={pkg.name}
