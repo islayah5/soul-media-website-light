@@ -11,7 +11,9 @@ export const Team: React.FC = () => {
   const [activePortfolio, setActivePortfolio] = useState<{
     name: string;
     role: string;
+    subRole?: string;
     url: string;
+    image?: string;
   } | null>(null);
 
   // Lock background page scroll and set modal open attribute on body
@@ -37,7 +39,7 @@ export const Team: React.FC = () => {
       subRole: 'Brand & Client Experience Director',
       bio: 'Visionary brand architect leading creative direction, brand core definition, and client partnership. Jada works directly with clients to translate their identity into high-converting visual media.',
       image: jadaHeadshot,
-      imageBg: '#0E0704', // Warm near-black matching her editorial backdrop
+      imageBg: '#10080F', // Luxury dark rose studio backdrop
       icon: Sparkles,
       color: 'from-[#FF94C7] to-[#D83685]',
       glowColor: 'rgba(255, 148, 199, 0.35)',
@@ -50,7 +52,7 @@ export const Team: React.FC = () => {
       subRole: 'Growth & Automation Strategist',
       bio: 'Operations mastermind architecting scalable post-production workflows, 3D web modeling, automated editing pipelines, and cost-effective remote talent integration for seamless client growth.',
       image: isaiahHeadshot,
-      imageBg: '#2D4A28', // Deep green matching his outdoor backdrop
+      imageBg: '#0C0814', // Deep amethyst tech studio backdrop
       icon: Cpu,
       color: 'from-[#D4B8FF] to-[#7C3AED]',
       glowColor: 'rgba(124, 58, 237, 0.35)',
@@ -63,7 +65,7 @@ export const Team: React.FC = () => {
       subRole: 'Lead Visual Editor',
       bio: 'Master lensman and editor orchestrating high-impact commercial video shoots, studio photography, cinematic cuts, and the signature visual styling that sets Soul Media apart.',
       image: joeHeadshot,
-      imageBg: '#1B3251', // Deep studio navy matching his seamless background
+      imageBg: '#081014', // Midnight studio cyan backdrop
       icon: Camera,
       color: 'from-[#FF9E7A] to-[#059669]',
       glowColor: 'rgba(5, 150, 105, 0.35)',
@@ -142,20 +144,72 @@ export const Team: React.FC = () => {
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               />
             ) : (
-              <div className="w-full h-full flex flex-col items-center justify-center p-8 text-center bg-[#FFF5F8]">
-                <Sparkles className="w-20 h-20 text-[#D83685] mb-6 opacity-80 animate-pulse" />
-                <h3 className="text-3xl font-black text-[#1A1626] mb-3">
-                  {activePortfolio.name}'s Executive Portfolio Showcase
-                </h3>
-                <p className="text-base text-[#4A4259] max-w-lg mb-8 leading-relaxed font-medium">
-                  Direct showcase portfolio link will be active here shortly. Connect directly with the executive team for custom presentation decks.
-                </p>
-                <button
-                  onClick={() => setActivePortfolio(null)}
-                  className="px-8 py-4 rounded-full bg-gradient-to-r from-[#FF94C7] to-[#D4B8FF] text-[#1A1626] font-extrabold text-sm hover:scale-105 transition-all cursor-pointer shadow-lg"
-                >
-                  Return to Soul Media Website
-                </button>
+              <div className="w-full h-full flex flex-col items-center justify-center p-6 sm:p-12 text-center bg-[#FFF5F8] overflow-y-auto">
+                <div className="max-w-2xl mx-auto glass-card rounded-3xl p-8 sm:p-12 border border-[#FFB6D9] shadow-2xl relative overflow-hidden">
+                  {/* Background ambient glow halo */}
+                  <div className="absolute -top-24 -right-24 w-72 h-72 rounded-full bg-[#FF94C7]/20 blur-3xl pointer-events-none" />
+                  <div className="absolute -bottom-24 -left-24 w-72 h-72 rounded-full bg-[#D4B8FF]/20 blur-3xl pointer-events-none" />
+
+                  {/* Leader Avatar Profile Frame */}
+                  {activePortfolio.image && (
+                    <div className="w-36 h-36 sm:w-40 sm:h-40 mx-auto mb-6 rounded-full overflow-hidden border-2 border-[#FFB6D9] shadow-2xl relative z-10 bg-[#10080F]">
+                      <img
+                        src={activePortfolio.image}
+                        alt={activePortfolio.name}
+                        className="w-full h-full object-cover scale-[1.57] origin-[center_41%]"
+                      />
+                    </div>
+                  )}
+
+                  {/* Live Status Pill */}
+                  <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#D83685]/10 border border-[#D83685]/30 text-xs font-black text-[#D83685] mb-6 shadow-sm">
+                    <span className="relative flex h-2 w-2">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#D83685] opacity-75"></span>
+                      <span className="relative inline-flex rounded-full h-2 w-2 bg-[#D83685]"></span>
+                    </span>
+                    <span>Executive Showcase — In Production</span>
+                  </div>
+
+                  {/* Title & Role */}
+                  <h3 className="text-3xl sm:text-4xl font-black text-[#1A1626] mb-2 tracking-tight">
+                    {activePortfolio.name}
+                  </h3>
+                  <p className="text-xs font-black text-[#D83685] uppercase tracking-widest mb-1">
+                    {activePortfolio.role}
+                  </p>
+                  {activePortfolio.subRole && (
+                    <p className="text-xs font-bold text-[#4A4259] italic mb-6">
+                      {activePortfolio.subRole}
+                    </p>
+                  )}
+
+                  {/* Body Copy */}
+                  <p className="text-[#4A4259] text-sm sm:text-base font-medium leading-relaxed max-w-lg mx-auto mb-8">
+                    {activePortfolio.name.split(' ')[0]}'s interactive case studies, creative direction portfolio, and executive presentation decks are currently being curated for the 2026 client showcase.
+                    <br /><br />
+                    To request custom media samples or an executive pitch deck directly, connect with our leadership team.
+                  </p>
+
+                  {/* Action Buttons */}
+                  <div className="flex flex-col sm:flex-row items-center justify-center gap-4 relative z-10">
+                    <a
+                      href="#contact"
+                      onClick={() => setActivePortfolio(null)}
+                      className="w-full sm:w-auto px-8 py-3.5 rounded-full bg-gradient-to-r from-[#FF94C7] via-[#D4B8FF] to-[#99FFE0] text-[#1A1626] font-black text-xs sm:text-sm flex items-center justify-center gap-2 hover:scale-105 transition-all shadow-lg cursor-pointer"
+                    >
+                      <Sparkles className="w-4 h-4 text-[#D83685]" />
+                      <span>Connect with Executive Team</span>
+                    </a>
+
+                    <button
+                      onClick={() => setActivePortfolio(null)}
+                      className="w-full sm:w-auto px-8 py-3.5 rounded-full glass-card border border-[#FFB6D9] text-[#1A1626] hover:border-[#D83685] font-black text-xs sm:text-sm flex items-center justify-center gap-2 transition-all cursor-pointer shadow-sm"
+                    >
+                      <ArrowLeft className="w-4 h-4 text-[#D83685]" />
+                      <span>Return to Soul Media</span>
+                    </button>
+                  </div>
+                </div>
               </div>
             )}
           </div>
@@ -290,7 +344,9 @@ export const Team: React.FC = () => {
                         setActivePortfolio({
                           name: member.name,
                           role: member.role,
+                          subRole: member.subRole,
                           url: member.portfolioUrl,
+                          image: member.image,
                         })
                       }
                       className="w-full py-3.5 rounded-2xl bg-gradient-to-r from-[#FF94C7] via-[#D4B8FF] to-[#99FFE0] text-[#1A1626] font-black text-xs flex items-center justify-center gap-2 hover:scale-[1.02] transition-all shadow-lg cursor-pointer"
@@ -315,7 +371,9 @@ export const Team: React.FC = () => {
                       setActivePortfolio({
                         name: member.name,
                         role: member.role,
+                        subRole: member.subRole,
                         url: '',
+                        image: member.image,
                       })
                     }
                     className="w-full py-3.5 rounded-2xl glass-card border border-[#FFB6D9] text-xs font-black text-[#4A4259] flex items-center justify-center gap-2 hover:text-[#1A1626] hover:border-[#D83685] transition-all cursor-pointer"

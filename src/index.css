@@ -19,9 +19,14 @@ body {
   overflow-x: hidden;
 }
 
-/* Hide OS default cursor on desktop fine-pointer devices for custom ring experience */
+/* Hide OS default cursor on desktop fine-pointer devices for custom ring experience (restores OS cursor when modal is active) */
 @media (pointer: fine) {
-  body, a, button, input, select, textarea {
+  body:not([data-portfolio-modal-open]),
+  body:not([data-portfolio-modal-open]) a,
+  body:not([data-portfolio-modal-open]) button,
+  body:not([data-portfolio-modal-open]) input,
+  body:not([data-portfolio-modal-open]) select,
+  body:not([data-portfolio-modal-open]) textarea {
     cursor: none !important;
   }
 }
