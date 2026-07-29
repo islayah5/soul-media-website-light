@@ -1,50 +1,191 @@
-export interface QuoteData {
+export interface QuoteSubmissionData {
   name: string;
-  company: string;
   email: string;
-  phone?: string;
-  services: string;
-  volume: string;
-  estimateRange: string;
+  businessName?: string;
+  deliverableVolume: number;
+  managementLevel: string;
+  servicesSelected: string[];
   notes?: string;
+  estimatedMin?: number;
+  estimatedMax?: number;
 }
 
-export interface ContactData {
+export interface ContactSubmissionData {
   name: string;
   email: string;
-  phone?: string;
-  service: string;
+  serviceInterest: string;
   message: string;
 }
 
-export const sendQuoteEmail = (data: QuoteData) => {
-  const subject = encodeURIComponent(`Soul Media - Custom Scope Intake: ${data.name} (${data.company})`);
-  const body = encodeURIComponent(
-    `Executive Intake Request from Soul Media Website\n\n` +
-    `Name: ${data.name}\n` +
-    `Company: ${data.company}\n` +
-    `Email: ${data.email}\n` +
-    `Phone: ${data.phone || 'N/A'}\n\n` +
-    `Scope Details:\n` +
-    `- Deliverable Output: ${data.volume}\n` +
-    `- Required Services: ${data.services}\n` +
-    `- Estimated Scope Investment Range: ${data.estimateRange}\n\n` +
-    `Additional Notes:\n${data.notes || 'None provided'}\n`
-  );
+const TARGET_EMAIL = 'soulmediagroup.info@gmail.com';
+const WEB3FORMS_ACCESS_KEY = '9cd21b37-3a41-45e7-b687-0bea7dc10528';
 
-  window.location.href = `mailto:contact@soulmediagroup.com?subject=${subject}&body=${body}`;
+/**
+ * Format email text for backup / mailto triggers
+ */
+export const formatQuoteEmail = (data: QuoteSubmissionData): { subject: string; body: string } => {
+  const subject = `New Soul Media Strategy Request from ${data.name}`;
+  const body = `SOUL MEDIA CUSTOM SCOPE REQUEST
+===========================================
+Client Name: ${data.name}
+Email Address: ${data.email}
+Business / Brand: ${data.businessName || 'Not specified'}
+
+SCOPE & VOLUME DETAILS:
+-------------------------------------------
+Monthly Deliverables Target: ${data.deliverableVolume} assets / month
+Management Preference: ${data.managementLevel}
+Estimated Monthly Scope: $${data.estimatedMin || 0} - $${data.estimatedMax || 0} / mo
+
+SELECTED SERVICES & MODULES:
+-------------------------------------------
+${data.servicesSelected.length > 0 ? data.servicesSelected.map(s => `• ${s}`).join('\n') : '• Core Strategy & Media Production'}
+
+PROJECT NOTES & VISION:
+-------------------------------------------
+${data.notes || 'No specific notes provided.'}
+
+Submitted via Soul Media Digital Portal on ${new Date().toLocaleString()}
+`;
+
+  return { subject, body };
 };
 
-export const sendContactEmail = (data: ContactData) => {
-  const subject = encodeURIComponent(`Soul Media - Strategy Call Request: ${data.name}`);
-  const body = encodeURIComponent(
-    `Direct Strategy Intake from Soul Media Website\n\n` +
-    `Name: ${data.name}\n` +
-    `Email: ${data.email}\n` +
-    `Phone: ${data.phone || 'N/A'}\n` +
-    `Primary Capability Interest: ${data.service}\n\n` +
-    `Message:\n${data.message}\n`
-  );
+export const formatContactEmail = (data: ContactSubmissionData): { subject: string; body: string } => {
+  const subject = `Direct Consultation Request: ${data.name} (${data.serviceInterest})`;
+  const body = `SOUL MEDIA DIRECT CONSULTATION INQUIRY
+===========================================
+Name: ${data.name}
+Email: ${data.email}
+Service Focus: ${data.serviceInterest}
 
-  window.location.href = `mailto:contact@soulmediagroup.com?subject=${subject}&body=${body}`;
+MESSAGE:
+-------------------------------------------
+${data.message}
+
+Submitted via Soul Media Contact Form on ${new Date().toLocaleString()}
+`;
+
+  return { subject, body };
+};
+
+/**
+ * SILENT BACKGROUND LEAD CAPTURE ENGINE (LIGHT MODE BUILD)
+ * Automatically sends lead payload to soulmediagroup.info@gmail.com via Web3Forms API.
+ * Saves entries to local browser vault.
+ * Zero popups, zero redirects, zero UI impact for the prospect.
+ */
+export const sendLeadPayloadBackground = async (
+  type: 'ScopeBuilder' | 'ContactForm',
+  payload: QuoteSubmissionData | ContactSubmissionData
+): Promise<boolean> => {
+  const timestamp = new Date().toLocaleString();
+  const leadEntry = {
+    id: `lead_light_${Date.now()}`,
+    type,
+    payload,
+    timestamp,
+    status: 'captured',
+  };
+
+  // 1. Save to local browser storage vault (Anti-loss fail-safe)
+  try {
+    const existingLeadsRaw = localStorage.getItem('soul_media_leads_vault');
+    const existingLeads = existingLeadsRaw ? JSON.parse(existingLeadsRaw) : [];
+    existingLeads.unshift(leadEntry);
+    localStorage.setItem('soul_media_leads_vault', JSON.stringify(existingLeads));
+  } catch (err) {
+    console.warn('Local storage lead vault caching error:', err);
+  }
+
+  // 2. Format Web3Forms Payload
+  let emailSubject = '';
+  let formFields: Record<string, any> = {
+    access_key: WEB3FORMS_ACCESS_KEY,
+    from_name: 'Soul Media Lead Engine (Light Build)',
+    botcheck: '',
+  };
+
+  if (type === 'ScopeBuilder') {
+    const scopeData = payload as QuoteSubmissionData;
+    emailSubject = `⚡ [NEW LEAD - LIGHT BUILD] Scope Builder Submission: ${scopeData.name}`;
+    formFields = {
+      ...formFields,
+      subject: emailSubject,
+      name: scopeData.name,
+      email: scopeData.email,
+      'Lead Type': 'Scope Builder Engine (Light Mode)',
+      'Client Name': scopeData.name,
+      'Email Address': scopeData.email,
+      'Business / Brand': scopeData.businessName || 'Not specified',
+      'Monthly Volume Target': `${scopeData.deliverableVolume} Assets / Month`,
+      'Management Preference': scopeData.managementLevel,
+      'Estimated Monthly Range': scopeData.estimatedMin ? `$${scopeData.estimatedMin.toLocaleString()} - $${scopeData.estimatedMax?.toLocaleString()} / mo` : 'N/A',
+      'Selected Services': scopeData.servicesSelected.join(', '),
+      'Project Vision Notes': scopeData.notes || 'None provided',
+      'Submission Timestamp': timestamp,
+    };
+  } else {
+    const contactData = payload as ContactSubmissionData;
+    emailSubject = `📩 [NEW LEAD - LIGHT BUILD] Direct Inquiry: ${contactData.name} (${contactData.serviceInterest})`;
+    formFields = {
+      ...formFields,
+      subject: emailSubject,
+      name: contactData.name,
+      email: contactData.email,
+      'Lead Type': 'Executive Contact Inquiry (Light Mode)',
+      'Name': contactData.name,
+      'Email Address': contactData.email,
+      'Primary Interest': contactData.serviceInterest,
+      'Message': contactData.message,
+      'Submission Timestamp': timestamp,
+    };
+  }
+
+  // 3. Primary Web3Forms Direct API Dispatch
+  try {
+    const response = await fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+      body: JSON.stringify(formFields),
+    });
+
+    if (response.ok) {
+      const result = await response.json();
+      console.log(`[Soul Lead Engine - Light] Web3Forms lead dispatch successful:`, result);
+      return true;
+    }
+  } catch (err) {
+    console.warn('[Soul Lead Engine - Light] Web3Forms API dispatch warning:', err);
+  }
+
+  // 4. Secondary Channel: FormSubmit Fallback
+  try {
+    const formSubmitUrl = `https://formsubmit.co/ajax/${TARGET_EMAIL}`;
+    const response = await fetch(formSubmitUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+      body: JSON.stringify({ _subject: emailSubject, ...formFields }),
+    });
+
+    if (response.ok) {
+      console.log(`[Soul Lead Engine - Light] FormSubmit fallback successful`);
+      return true;
+    }
+  } catch (err) {
+    console.warn('[Soul Lead Engine - Light] FormSubmit fallback warning:', err);
+  }
+
+  return false;
+};
+
+export const triggerMailto = (subject: string, body: string): void => {
+  const mailtoUrl = `mailto:${TARGET_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  window.location.href = mailtoUrl;
 };

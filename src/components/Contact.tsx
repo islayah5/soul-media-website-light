@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Mail, Phone, MapPin, Send, MessageSquare, Clock, CheckCircle2 } from 'lucide-react';
-import { sendContactEmail } from '../utils/emailService';
+import { Mail, Phone, MapPin, Send, MessageSquare, Clock, CheckCircle2, Calendar } from 'lucide-react';
+import { sendLeadPayloadBackground } from '../utils/emailService';
+import { CalBookingModal } from './CalBookingModal';
 
 export const Contact: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -13,12 +14,22 @@ export const Contact: React.FC = () => {
   });
 
   const [submitted, setSubmitted] = useState(false);
+  const [isCalModalOpen, setIsCalModalOpen] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    sendContactEmail(formData);
+    if (!formData.name || !formData.email) return;
+
+    // Silent background lead capture & email dispatch
+    sendLeadPayloadBackground('ContactForm', {
+      name: formData.name,
+      email: formData.email,
+      serviceInterest: formData.service,
+      message: formData.message,
+    });
+
     setSubmitted(true);
-    setTimeout(() => setSubmitted(false), 6000);
+    setIsCalModalOpen(true);
   };
 
   return (
@@ -167,15 +178,33 @@ export const Contact: React.FC = () => {
               </button>
 
               {submitted && (
-                <div className="p-4 rounded-2xl bg-[#C2FFE5]/50 border border-[#059669] text-[#059669] text-xs font-bold flex items-center gap-2">
-                  <CheckCircle2 className="w-4 h-4" />
-                  <span>Opening mail app to send your request directly!</span>
+                <div className="p-4 rounded-2xl bg-[#99FFE0]/30 border border-[#059669] text-[#059669] text-xs font-bold flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                  <div className="flex items-center gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-[#059669]" />
+                    <span>Inquiry compiled! Strategy booking calendar is active.</span>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setIsCalModalOpen(true)}
+                    className="px-4 py-1.5 rounded-full bg-[#059669] text-white font-black text-[11px] hover:scale-105 transition-transform cursor-pointer shrink-0"
+                  >
+                    Re-Open Calendar
+                  </button>
                 </div>
               )}
             </form>
           </motion.div>
         </div>
       </div>
+
+      {/* Cal.com Strategy Booking Modal */}
+      <CalBookingModal
+        isOpen={isCalModalOpen}
+        onClose={() => setIsCalModalOpen(false)}
+        prefillName={formData.name}
+        prefillEmail={formData.email}
+        scopeSummary={`Interest: ${formData.service} | Message: ${formData.message}`}
+      />
     </section>
   );
 };

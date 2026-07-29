@@ -20,13 +20,17 @@ import {
   MessageSquare,
   ArrowRight,
   ArrowLeft,
+  Calendar,
 } from 'lucide-react';
-import { sendQuoteEmail } from '../utils/emailService';
+import { sendLeadPayloadBackground } from '../utils/emailService';
+import { CalBookingModal } from './CalBookingModal';
 
 export const QuoteBuilder: React.FC = () => {
   const [step, setStep] = useState(1);
   const [volume, setVolume] = useState(12); // Assets per month
   const [isRetainer, setIsRetainer] = useState(true);
+  const [submitted, setSubmitted] = useState(false);
+  const [isCalModalOpen, setIsCalModalOpen] = useState(false);
 
   // Service Selections
   const [services, setServices] = useState<string[]>([
@@ -99,19 +103,21 @@ export const QuoteBuilder: React.FC = () => {
     e.preventDefault();
     const estimate = calculateEstimate();
 
-    sendQuoteEmail({
+    // Silent background lead capture & email dispatch
+    sendLeadPayloadBackground('ScopeBuilder', {
       name: formData.name,
-      company: formData.company,
       email: formData.email,
-      phone: formData.phone,
-      services: services.join(', '),
-      volume: `${volume} Assets / Month (${isRetainer ? 'Monthly Retainer' : 'One-Time Project'})`,
-      estimateRange: `$${estimate.min} - $${estimate.max}`,
+      businessName: formData.company,
+      deliverableVolume: volume,
+      managementLevel: isRetainer ? 'Monthly Retainer' : 'One-Time Project',
+      servicesSelected: services,
       notes: formData.notes,
+      estimatedMin: parseInt(estimate.min.replace(/,/g, '')),
+      estimatedMax: parseInt(estimate.max.replace(/,/g, '')),
     });
 
-    setToastMessage('Redirecting to mail client to transmit custom scope request...');
-    setTimeout(() => setToastMessage(null), 5000);
+    setSubmitted(true);
+    setIsCalModalOpen(true);
   };
 
   const estimate = calculateEstimate();
@@ -485,26 +491,45 @@ export const QuoteBuilder: React.FC = () => {
                   </p>
                 </div>
 
-                <form onSubmit={handleSubmit} className="pt-4">
+                <form onSubmit={handleSubmit} className="pt-4 space-y-4">
                   <button
                     type="submit"
                     className="w-full sm:w-auto px-10 py-4 rounded-full bg-gradient-to-r from-[#FF94C7] via-[#D4B8FF] to-[#99FFE0] text-[#1A1626] font-black text-sm flex items-center justify-center gap-3 mx-auto hover:scale-105 transition-all shadow-xl cursor-pointer"
                   >
-                    <Send className="w-4 h-4" />
-                    <span>Transmit Scope to Executive Team</span>
+                    <Sparkles className="w-4 h-4" />
+                    <span>Transmit Scope & Schedule Strategy Call</span>
                   </button>
-                </form>
 
-                {toastMessage && (
-                  <div className="p-4 rounded-2xl bg-[#C2FFE5]/40 border border-[#059669] text-[#059669] text-xs font-bold">
-                    {toastMessage}
-                  </div>
-                )}
+                  {submitted && (
+                    <div className="p-5 rounded-2xl bg-[#99FFE0]/30 border border-[#059669] text-[#059669] text-center space-y-3">
+                      <p className="text-sm font-bold">
+                        ✨ Proposal Transmitted Successfully! Strategy booking calendar is active.
+                      </p>
+                      <button
+                        type="button"
+                        onClick={() => setIsCalModalOpen(true)}
+                        className="px-6 py-2.5 rounded-full bg-[#059669] text-white font-black text-xs inline-flex items-center gap-2 hover:scale-105 transition-transform shadow-lg cursor-pointer"
+                      >
+                        <Calendar className="w-4 h-4" />
+                        <span>Re-Open Booking Calendar (cal.com/soul-media/30min)</span>
+                      </button>
+                    </div>
+                  )}
+                </form>
               </motion.div>
             )}
           </AnimatePresence>
         </div>
       </div>
+
+      {/* Cal.com Pre-Filled Strategy Booking Modal */}
+      <CalBookingModal
+        isOpen={isCalModalOpen}
+        onClose={() => setIsCalModalOpen(false)}
+        prefillName={formData.name}
+        prefillEmail={formData.email}
+        scopeSummary={`Monthly Target: ${volume} deliverables/mo | Est: $${estimate.min}-$${estimate.max}`}
+      />
     </section>
   );
 };
