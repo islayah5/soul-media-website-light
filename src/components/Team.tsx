@@ -3,9 +3,9 @@ import ReactDOM from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Camera, Sparkles, Cpu, ExternalLink, X, Globe, Award, ArrowLeft } from 'lucide-react';
 
-import jadaHeadshot from '../assets/Jada_Brown-Headshot.jpg';
-import isaiahHeadshot from '../assets/Isaiah_Chandler-Headshot.PNG';
-import joeHeadshot from '../assets/Joe_Irizarry_Dominicci-Headshot.jpeg';
+import jadaHeadshot from '../assets/Jada_Brown-Headshot-Master.jpg';
+import isaiahHeadshot from '../assets/Isaiah_Chandler-Headshot-Master.jpg';
+import joeHeadshot from '../assets/Joe_Irizarry-Headshot-Master.jpg';
 
 export const Team: React.FC = () => {
   const [activePortfolio, setActivePortfolio] = useState<{
@@ -37,10 +37,12 @@ export const Team: React.FC = () => {
       subRole: 'Brand & Client Experience Director',
       bio: 'Visionary brand architect leading creative direction, brand core definition, and client partnership. Jada works directly with clients to translate their identity into high-converting visual media.',
       image: jadaHeadshot,
+      imageBg: '#0E0704', // Warm near-black matching her editorial backdrop
       icon: Sparkles,
       color: 'from-[#FF94C7] to-[#D83685]',
+      glowColor: 'rgba(255, 148, 199, 0.35)',
       badge: 'Agency Founder',
-      portfolioUrl: '', // Ready for Jada's portfolio URL
+      portfolioUrl: '', // Jada's portfolio in development
     },
     {
       name: 'Isaiah Chandler',
@@ -48,8 +50,10 @@ export const Team: React.FC = () => {
       subRole: 'Growth & Automation Strategist',
       bio: 'Operations mastermind architecting scalable post-production workflows, 3D web modeling, automated editing pipelines, and cost-effective remote talent integration for seamless client growth.',
       image: isaiahHeadshot,
+      imageBg: '#2D4A28', // Deep green matching his outdoor backdrop
       icon: Cpu,
       color: 'from-[#D4B8FF] to-[#7C3AED]',
+      glowColor: 'rgba(124, 58, 237, 0.35)',
       badge: 'Ops & Tech Lead',
       portfolioUrl: 'https://isaiah-chandler.netlify.app/',
     },
@@ -59,10 +63,12 @@ export const Team: React.FC = () => {
       subRole: 'Lead Visual Editor',
       bio: 'Master lensman and editor orchestrating high-impact commercial video shoots, studio photography, cinematic cuts, and the signature visual styling that sets Soul Media apart.',
       image: joeHeadshot,
+      imageBg: '#1B3251', // Deep studio navy matching his seamless background
       icon: Camera,
       color: 'from-[#FF9E7A] to-[#059669]',
+      glowColor: 'rgba(5, 150, 105, 0.35)',
       badge: 'Production Engine',
-      portfolioUrl: '', // Ready for Joe's portfolio URL
+      portfolioUrl: '', // Joe's portfolio in development
     },
   ];
 
@@ -204,20 +210,55 @@ export const Team: React.FC = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.15 }}
-              className="glass-card glass-card-hover rounded-3xl overflow-hidden border border-[#FFB6D9]/50 shadow-xl flex flex-col justify-between group"
+              className="glass-card glass-card-hover rounded-3xl overflow-hidden border border-[#FFB6D9]/50 shadow-xl flex flex-col justify-between group hover:border-[#D83685]/60 hover:shadow-[0_20px_50px_rgba(216,54,133,0.18)] transition-all duration-500"
             >
               <div>
-                {/* Image Container */}
-                <div className="relative aspect-[4/5] overflow-hidden bg-[#FFF5F8]">
+                {/* Image Container — Precision-Framed with Ambient Lighting */}
+                <div
+                  className="relative aspect-[4/5] overflow-hidden"
+                  style={{ backgroundColor: member.imageBg }}
+                >
+                  {/* Rich ambient brand glow — visible, not washed out */}
+                  <div
+                    className={`absolute inset-0 bg-gradient-to-br ${member.color} opacity-0 group-hover:opacity-30 transition-opacity duration-700 pointer-events-none`}
+                    style={{ filter: 'blur(40px)', transform: 'scale(1.2)' }}
+                  />
+
+                  {/* Master pre-framed headshot asset */}
                   <img
                     src={member.image}
                     alt={member.name}
-                    className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
+                    className="w-full h-full object-cover transition-all duration-700 ease-out group-hover:scale-[1.04]"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#FFF5F8] via-transparent to-transparent opacity-80" />
 
-                  {/* Top Badge */}
-                  <div className="absolute top-4 left-4 px-3.5 py-1.5 rounded-full glass-card border border-[#FFB6D9] text-xs font-black text-[#D83685] flex items-center gap-1.5 shadow-md">
+                  {/* Bottom-only gradient fade — subtle, NOT washed out */}
+                  <div
+                    className="absolute inset-x-0 bottom-0 h-[35%] pointer-events-none transition-opacity duration-500"
+                    style={{
+                      background: 'linear-gradient(to top, #FFF5F8 0%, rgba(255,245,248,0.6) 40%, transparent 100%)',
+                    }}
+                  />
+
+                  {/* Subtle top vignette for depth */}
+                  <div
+                    className="absolute inset-x-0 top-0 h-[15%] pointer-events-none"
+                    style={{
+                      background: `linear-gradient(to bottom, ${member.imageBg}33 0%, transparent 100%)`,
+                    }}
+                  />
+
+                  {/* Ambient edge glow on hover */}
+                  <div
+                    className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"
+                    style={{
+                      boxShadow: `inset 0 0 60px 10px ${member.glowColor}`,
+                    }}
+                  />
+
+                  {/* Top Floating Badge */}
+                  <div className="absolute top-4 left-4 px-3.5 py-1.5 rounded-full border border-white/20 text-xs font-black text-white flex items-center gap-1.5 shadow-lg"
+                    style={{ backgroundColor: 'rgba(26, 22, 38, 0.55)', backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)' }}
+                  >
                     <member.icon className="w-3.5 h-3.5" />
                     <span>{member.badge}</span>
                   </div>
@@ -277,9 +318,9 @@ export const Team: React.FC = () => {
                         url: '',
                       })
                     }
-                    className="w-full py-3.5 rounded-2xl glass-card border border-[#FFB6D9] text-xs font-black text-[#4A4259] flex items-center justify-center gap-2 hover:text-[#1A1626] transition-all cursor-pointer"
+                    className="w-full py-3.5 rounded-2xl glass-card border border-[#FFB6D9] text-xs font-black text-[#4A4259] flex items-center justify-center gap-2 hover:text-[#1A1626] hover:border-[#D83685] transition-all cursor-pointer"
                   >
-                    <Award className="w-4 h-4 text-[#059669]" />
+                    <Award className="w-4 h-4 text-[#D83685]" />
                     <span>Executive Showcase</span>
                   </button>
                 )}
