@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Camera, Sparkles, Cpu, ExternalLink, X, Globe, Award, ArrowLeft } from 'lucide-react';
+import { Camera, Sparkles, Cpu, ExternalLink, X, Globe, Award, ArrowLeft, Play, Film } from 'lucide-react';
 
 import jadaHeadshot from '../assets/Jada_Brown-Headshot-Master.jpg';
 import isaiahHeadshot from '../assets/Isaiah_Chandler-Headshot-Master.jpg';
 import joeHeadshot from '../assets/Joe_Irizarry-Headshot-Master.jpg';
+import joePortfolioAvatar from '../assets/joe-portfolio-avatar.jpg';
 
 import glassCamera from '../assets/glass-3d-camera.png';
 import glassPlayer from '../assets/glass-3d-videoplayer.png';
@@ -13,6 +14,34 @@ import glassKeyboard from '../assets/glass-3d-keyboard.png';
 import glassStars from '../assets/glass-3d-stars.png';
 import glassStylus from '../assets/glass-3d-stylus.png';
 import glassFilmstrip from '../assets/glass-3d-filmstrip.png';
+
+import thumbValentino from '../assets/thumb-valentino.png';
+import thumbErin from '../assets/thumb-erin-riley.png';
+import thumbWedding from '../assets/thumb-wedding.png';
+
+const JOE_FILMS = [
+  {
+    id: 'aGWfZi0ZzJM',
+    title: 'Valentino Ristorante Italiano',
+    category: 'Brand Film & Website Banner',
+    description: 'A luxurious website video banner created for Valentino’s, blending high fashion with cinematic storytelling to elevate the brand’s digital presence.',
+    thumbnail: thumbValentino,
+  },
+  {
+    id: 'c4R-nmzX5e4',
+    title: 'Erin & Riley Testimonial (Dragonfly)',
+    category: 'Documentary Storytelling',
+    description: 'An emotional testimonial video capturing Erin & Riley’s story through heartfelt narrative and cinematic visuals.',
+    thumbnail: thumbErin,
+  },
+  {
+    id: 'A1OlQdrAYIY',
+    title: 'Cinematic Wedding Teaser',
+    category: 'Cinematic Short Film',
+    description: 'A cinematic wedding teaser that weaves together intimate moments and grand emotions in a visually striking short film.',
+    thumbnail: thumbWedding,
+  },
+];
 
 export const Team: React.FC = () => {
   const [activePortfolio, setActivePortfolio] = useState<{
@@ -22,6 +51,8 @@ export const Team: React.FC = () => {
     url: string;
     image?: string;
   } | null>(null);
+
+  const [activeJoeFilm, setActiveJoeFilm] = useState(JOE_FILMS[0]);
 
   // Lock background page scroll and set modal open attribute on body
   useEffect(() => {
@@ -89,7 +120,7 @@ export const Team: React.FC = () => {
       color: 'from-[#99FFE0] to-[#059669]',
       glowColor: 'rgba(153, 255, 224, 0.45)',
       badge: 'Production Engine',
-      portfolioUrl: '', // Joe's portfolio in development
+      portfolioUrl: 'https://framesbyirizarry.com/',
     },
   ];
 
@@ -152,9 +183,9 @@ export const Team: React.FC = () => {
             </div>
           </div>
 
-          {/* iFrame Viewport Container */}
-          <div className="flex-grow w-full h-[calc(100vh-64px)] relative bg-[#FFF5F8]">
-            {activePortfolio.url ? (
+          {/* Viewport Container: Handles CSP-blocked external sites gracefully with Native Cinema Theatre Showcase */}
+          <div className="flex-grow w-full h-[calc(100vh-64px)] relative bg-[#FFF5F8] overflow-y-auto">
+            {activePortfolio.url && !activePortfolio.url.includes('framesbyirizarry.com') ? (
               <iframe
                 src={activePortfolio.url}
                 title={`${activePortfolio.name} Portfolio`}
@@ -163,68 +194,129 @@ export const Team: React.FC = () => {
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               />
             ) : (
-              <div className="w-full h-full flex flex-col items-center justify-center p-6 sm:p-12 text-center bg-[#FFF5F8] overflow-y-auto">
-                <div className="max-w-2xl mx-auto glass-card rounded-3xl p-8 sm:p-12 border border-[#FFB6D9] shadow-2xl relative overflow-hidden">
-                  {/* Background ambient glow halo */}
-                  <div className="absolute -top-24 -right-24 w-72 h-72 rounded-full bg-[#FF94C7]/20 blur-3xl pointer-events-none" />
-                  <div className="absolute -bottom-24 -left-24 w-72 h-72 rounded-full bg-[#D4B8FF]/20 blur-3xl pointer-events-none" />
+              <div className="w-full min-h-full flex flex-col items-center justify-center p-4 sm:p-8 text-center bg-[#10080F] overflow-y-auto">
+                <div className="max-w-5xl mx-auto glass-card rounded-3xl p-6 sm:p-10 border border-[#059669]/40 shadow-2xl relative overflow-hidden my-auto bg-[#1A0C18]/90 text-white">
+                  {/* Background ambient glow halos */}
+                  <div className="absolute -top-32 -right-32 w-96 h-96 rounded-full bg-[#059669]/20 blur-3xl pointer-events-none" />
+                  <div className="absolute -bottom-32 -left-32 w-96 h-96 rounded-full bg-[#99FFE0]/15 blur-3xl pointer-events-none" />
 
-                  {/* Leader Avatar Profile Frame */}
-                  {activePortfolio.image && (
-                    <div className="w-36 h-36 sm:w-40 sm:h-40 mx-auto mb-6 rounded-full overflow-hidden border-2 border-[#FFB6D9] shadow-2xl relative z-10 bg-[#10080F]">
-                      <img
-                        src={activePortfolio.image}
-                        alt={activePortfolio.name}
-                        className="w-full h-full object-cover scale-[1.57] origin-[center_41%]"
-                      />
+                  {/* Header Bar */}
+                  <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-6 pb-6 border-b border-white/10 text-left">
+                    <div className="flex items-center gap-4">
+                      {activePortfolio.image && (
+                        <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full overflow-hidden border-2 border-[#99FFE0] shadow-xl flex-shrink-0 bg-black">
+                          <img
+                            src={activePortfolio.name.includes('Joe') ? joePortfolioAvatar : activePortfolio.image}
+                            alt={activePortfolio.name}
+                            className={`w-full h-full object-cover ${activePortfolio.name.includes('Joe') ? 'object-center scale-100' : 'scale-[1.57] origin-[center_41%]'}`}
+                          />
+                        </div>
+                      )}
+                      <div>
+                        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#059669]/20 border border-[#059669]/40 text-[10px] sm:text-xs font-black text-[#99FFE0] mb-1">
+                          <Film className="w-3 h-3 text-[#99FFE0]" />
+                          <span>Executive Director Showcase</span>
+                        </div>
+                        <h3 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
+                          {activePortfolio.name}
+                        </h3>
+                        <p className="text-xs font-bold text-[#99FFE0]/90 uppercase tracking-widest">
+                          {activePortfolio.role}
+                        </p>
+                      </div>
                     </div>
-                  )}
 
-                  {/* Live Status Pill */}
-                  <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#D83685]/10 border border-[#D83685]/30 text-xs font-black text-[#D83685] mb-6 shadow-sm">
-                    <span className="relative flex h-2 w-2">
-                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#D83685] opacity-75"></span>
-                      <span className="relative inline-flex rounded-full h-2 w-2 bg-[#D83685]"></span>
-                    </span>
-                    <span>Executive Showcase — In Production</span>
+                    {/* External Site Button */}
+                    {activePortfolio.url && (
+                      <a
+                        href={activePortfolio.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="px-6 py-2.5 rounded-full bg-[#059669] hover:bg-[#047857] text-white font-black text-xs flex items-center gap-2 transition-all shadow-lg hover:scale-105 cursor-pointer"
+                      >
+                        <span>Launch framesbyirizarry.com</span>
+                        <ExternalLink className="w-3.5 h-3.5" />
+                      </a>
+                    )}
                   </div>
 
-                  {/* Title & Role */}
-                  <h3 className="text-3xl sm:text-4xl font-black text-[#1A1626] mb-2 tracking-tight">
-                    {activePortfolio.name}
-                  </h3>
-                  <p className="text-xs font-black text-[#D83685] uppercase tracking-widest mb-1">
-                    {activePortfolio.role}
-                  </p>
-                  {activePortfolio.subRole && (
-                    <p className="text-xs font-bold text-[#4A4259] italic mb-6">
-                      {activePortfolio.subRole}
+                  {/* Featured Cinema Player Viewport */}
+                  <div className="mb-8">
+                    <div className="aspect-video w-full rounded-2xl overflow-hidden shadow-2xl border border-white/15 bg-black relative">
+                      <iframe
+                        src={`https://www.youtube-nocookie.com/embed/${activeJoeFilm.id}?autoplay=1&rel=0`}
+                        title={activeJoeFilm.title}
+                        className="w-full h-full border-0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                      />
+                    </div>
+                    <div className="mt-3 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 text-left">
+                      <div>
+                        <span className="text-[10px] font-black text-[#99FFE0] uppercase tracking-widest">{activeJoeFilm.category}</span>
+                        <h4 className="text-lg font-black text-white">{activeJoeFilm.title}</h4>
+                      </div>
+                      <p className="text-xs text-white/70 font-medium max-w-md">{activeJoeFilm.description}</p>
+                    </div>
+                  </div>
+
+                  {/* Film Selection Gallery (Interactive High-Res Thumbnails) */}
+                  <div className="text-left mb-8">
+                    <h5 className="text-xs font-black uppercase tracking-widest text-white/60 mb-3 flex items-center gap-2">
+                      <Sparkles className="w-3.5 h-3.5 text-[#99FFE0]" />
+                      <span>Select Featured Film to Play</span>
+                    </h5>
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                      {JOE_FILMS.map((film) => {
+                        const isSelected = activeJoeFilm.id === film.id;
+                        return (
+                          <button
+                            key={film.id}
+                            onClick={() => setActiveJoeFilm(film)}
+                            className={`group relative rounded-2xl overflow-hidden border transition-all text-left cursor-pointer ${
+                              isSelected
+                                ? 'border-[#99FFE0] ring-2 ring-[#99FFE0]/50 scale-[1.02]'
+                                : 'border-white/10 hover:border-white/30 opacity-80 hover:opacity-100'
+                            }`}
+                          >
+                            <div className="aspect-video w-full relative overflow-hidden bg-black">
+                              <img
+                                src={film.thumbnail}
+                                alt={film.title}
+                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                              />
+                              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                              
+                              {/* Play Badge */}
+                              <div className="absolute inset-0 flex items-center justify-center">
+                                <div className={`w-10 h-10 rounded-full flex items-center justify-center transition-all ${
+                                  isSelected ? 'bg-[#99FFE0] text-black shadow-lg scale-110' : 'bg-black/60 text-white group-hover:bg-[#99FFE0] group-hover:text-black'
+                                }`}>
+                                  <Play className="w-4 h-4 fill-current ml-0.5" />
+                                </div>
+                              </div>
+
+                              <div className="absolute bottom-2 left-2 right-2">
+                                <span className="text-[9px] font-black text-[#99FFE0] uppercase tracking-wider block mb-0.5">{film.category}</span>
+                                <p className="text-xs font-bold text-white line-clamp-1">{film.title}</p>
+                              </div>
+                            </div>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  {/* Footer Actions */}
+                  <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-4 border-t border-white/10">
+                    <p className="text-xs font-medium text-white/60 italic">
+                      "Stories that move people. Films that move brands." — Joe Irizarry
                     </p>
-                  )}
-
-                  {/* Body Copy */}
-                  <p className="text-[#4A4259] text-sm sm:text-base font-medium leading-relaxed max-w-lg mx-auto mb-8">
-                    {activePortfolio.name.split(' ')[0]}'s interactive case studies, creative direction portfolio, and executive presentation decks are currently being curated for the 2026 client showcase.
-                    <br /><br />
-                    To request custom media samples or an executive pitch deck directly, connect with our leadership team.
-                  </p>
-
-                  {/* Action Buttons */}
-                  <div className="flex flex-col sm:flex-row items-center justify-center gap-4 relative z-10">
-                    <a
-                      href="#contact"
-                      onClick={() => setActivePortfolio(null)}
-                      className="w-full sm:w-auto px-8 py-3.5 rounded-full bg-gradient-to-r from-[#FF94C7] via-[#D4B8FF] to-[#99FFE0] text-[#1A1626] font-black text-xs sm:text-sm flex items-center justify-center gap-2 hover:scale-105 transition-all shadow-lg cursor-pointer"
-                    >
-                      <Sparkles className="w-4 h-4 text-[#D83685]" />
-                      <span>Connect with Executive Team</span>
-                    </a>
-
                     <button
                       onClick={() => setActivePortfolio(null)}
-                      className="w-full sm:w-auto px-8 py-3.5 rounded-full glass-card border border-[#FFB6D9] text-[#1A1626] hover:border-[#D83685] font-black text-xs sm:text-sm flex items-center justify-center gap-2 transition-all cursor-pointer shadow-sm"
+                      className="px-8 py-3 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 text-white font-bold text-xs flex items-center justify-center gap-2 transition-all cursor-pointer"
                     >
-                      <ArrowLeft className="w-4 h-4 text-[#D83685]" />
+                      <ArrowLeft className="w-4 h-4 text-[#99FFE0]" />
                       <span>Return to Soul Media</span>
                     </button>
                   </div>
