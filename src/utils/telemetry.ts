@@ -23,6 +23,8 @@ declare global {
 
 let isInitialized = false;
 
+const DEFAULT_POSTHOG_KEY = 'phc_meYvMnH6m5LkMsa8GSCBEUuJ4DsQSdFXuiuwTZDYLwWB';
+
 /**
  * Initialize Telemetry Services (PostHog & GA4) asynchronously after page load
  */
@@ -30,14 +32,16 @@ export const initTelemetry = (posthogKey?: string, ga4Id?: string): void => {
   if (isInitialized || typeof window === 'undefined') return;
   isInitialized = true;
 
+  const targetPostHogKey = posthogKey || DEFAULT_POSTHOG_KEY;
+
   // 1. PostHog Telemetry (Cookieless mode via Netlify proxy)
-  if (posthogKey) {
+  if (targetPostHogKey) {
     const script = document.createElement('script');
     script.async = true;
     script.src = '/ingest/static/array.js';
     script.onload = () => {
       if (window.posthog) {
-        window.posthog.init(posthogKey, {
+        window.posthog.init(targetPostHogKey, {
           api_host: '/ingest',
           ui_host: 'https://us.posthog.com',
           autocapture: true,
@@ -45,7 +49,7 @@ export const initTelemetry = (posthogKey?: string, ga4Id?: string): void => {
           persistence: 'memory', // Cookie-less (No consent banner needed!)
           disable_session_recording: false,
         });
-        console.log('[Soul Telemetry] PostHog initialized via Netlify Proxy');
+        console.log('[Soul Telemetry] PostHog initialized via Netlify Proxy with key:', targetPostHogKey);
       }
     };
     document.head.appendChild(script);
