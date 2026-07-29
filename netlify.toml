@@ -1,0 +1,16 @@
+# Netlify Configuration for Soul Media Primary Website
+
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+# PostHog Reverse Proxy for 100% Ad-Blocker Bypass & 0ms Third-Party Latency
+[[redirects]]
+  from = "/ingest/static/*"
+  to = "https://us-assets.i.posthog.com/static/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/ingest/*"
+  to = "https://us.i.posthog.com/:splat"
+  status = 200

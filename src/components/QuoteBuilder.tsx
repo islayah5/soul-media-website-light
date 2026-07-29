@@ -23,6 +23,7 @@ import {
   Calendar,
 } from 'lucide-react';
 import { sendLeadPayloadBackground } from '../utils/emailService';
+import { trackEvent } from '../utils/telemetry';
 import { CalBookingModal } from './CalBookingModal';
 
 export const QuoteBuilder: React.FC = () => {
@@ -92,6 +93,7 @@ export const QuoteBuilder: React.FC = () => {
         colors: ['#FFB6D9', '#E5D4FF', '#FFD4C2', '#C2FFE5'],
       });
     }
+    trackEvent('scope_builder_step_viewed', { step_number: step + 1, volume, is_retainer: isRetainer });
     setStep(step + 1);
   };
 
@@ -102,6 +104,15 @@ export const QuoteBuilder: React.FC = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const estimate = calculateEstimate();
+
+    // Telemetry Event
+    trackEvent('scope_builder_submitted', {
+      deliverable_volume: volume,
+      management_level: isRetainer ? 'Monthly Retainer' : 'One-Time Project',
+      services_selected: services.join(', '),
+      estimated_min: parseInt(estimate.min.replace(/,/g, '')),
+      estimated_max: parseInt(estimate.max.replace(/,/g, '')),
+    });
 
     // Silent background lead capture & email dispatch
     sendLeadPayloadBackground('ScopeBuilder', {

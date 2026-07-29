@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Calendar, Sparkles, ExternalLink } from 'lucide-react';
+import { trackEvent } from '../utils/telemetry';
 
 interface CalBookingModalProps {
   isOpen: boolean;
@@ -21,13 +22,14 @@ export const CalBookingModal: React.FC<CalBookingModalProps> = ({
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
+      trackEvent('cal_booking_modal_opened', { has_prefill_name: !!prefillName, has_prefill_email: !!prefillEmail });
     } else {
       document.body.style.overflow = '';
     }
     return () => {
       document.body.style.overflow = '';
     };
-  }, [isOpen]);
+  }, [isOpen, prefillName, prefillEmail]);
 
   if (!isOpen) return null;
 

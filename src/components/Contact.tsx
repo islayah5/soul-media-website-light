@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Mail, Phone, MapPin, Send, MessageSquare, Clock, CheckCircle2, Calendar } from 'lucide-react';
 import { sendLeadPayloadBackground } from '../utils/emailService';
+import { trackEvent } from '../utils/telemetry';
 import { CalBookingModal } from './CalBookingModal';
 
 export const Contact: React.FC = () => {
@@ -19,6 +20,11 @@ export const Contact: React.FC = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.name || !formData.email) return;
+
+    // Telemetry Event
+    trackEvent('contact_form_submitted', {
+      service_interest: formData.service,
+    });
 
     // Silent background lead capture & email dispatch
     sendLeadPayloadBackground('ContactForm', {
