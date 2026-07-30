@@ -1,0 +1,29 @@
+Asset / Subsystem,Live Production Link,Key / Credentials,Purpose & Operational Function
+Live Production Site,https://soul-media-group.netlify.app,Netlify ID: 06c7bcbd-9a7f-4148-9320-b2e82e8da9ac,Primary Light Mode Agency Platform
+GitHub Master Repository,https://github.com/islayah5/soul-media-website-light,Branch: main (Commit 6f680a2),Automated CI/CD deployment source code
+Netlify Admin Portal,https://app.netlify.com/projects/soul-media-group,Account ID: 681055bc873063786b93b75b,Production logs domain & CDN settings
+Lead Engine Target Inbox,soulmediagroup.info@gmail.com,Primary Email Destination,Receives Web3Forms lead submissions
+Web3Forms Direct API,https://api.web3forms.com/submit,Access Key: 9cd21b37-3a41-45e7-b687-0bea7dc10528,Silent lead submission engine (<1s inbox)
+Cal.com Strategy Booking,https://cal.com/soul-media/30min,30-Min Strategy Call,Pre-filled strategy booking modal link
+Dark Email Signature,https://soul-media-group.netlify.app/email-signature.html,High-DPI Executive HTML,Dark card email signature asset
+Light Email Signature,https://soul-media-group.netlify.app/email-signature-light.html,High-DPI Executive HTML,Light card email signature asset
+Transparent Brand Logo,https://soul-media-group.netlify.app/brand/soul-media-logo-hd-transparent.png,100% Transparent PNG,Zero-CORS high-resolution logo asset
+Open Graph Social Card,https://soul-media-group.netlify.app/brand/soul-media-og-card.png,1200x630 High-DPI PNG,Rich link preview card for iMessage/LinkedIn
+
+POSTHOG ANALYTICS & TELEMETRY COMMAND CENTER,,,
+Analytics Tool,Direct PostHog Link,Identifier / Scope,Configuration Notes
+PostHog Cloud Workspace,https://us.posthog.com/project/533998,Project ID: 533998,Master PostHog analytics dashboard
+Executive Dashboard 1929751,https://us.posthog.com/project/533998/dashboard/1929751,Dashboard ID: 1929751,Pinned primary dashboard with 6 active tiles
+Internal Test Cohort,https://us.posthog.com/project/533998/cohorts/443037,Cohort ID: 443037 (Count: 5),Excludes team IP & test devices automatically
+Session Replay Stream,https://us.posthog.com/project/533998/replay,HD Video Replay Stream,Watch screen & cursor recordings of leads
+Action: Hot Lead Submitted,https://us.posthog.com/project/533998/data-management/actions,Action ID: 301040,Auto-tags scope package submissions
+Action: Call Booked,https://us.posthog.com/project/533998/data-management/actions,Action ID: 301041,Auto-tags strategy call launches
+Action: Portfolio 3D,https://us.posthog.com/project/533998/data-management/actions,Action ID: 301042,Auto-tags 3D portfolio card flips
+PostHog Personal API Key,Account Settings (Antigravity),[PostHog Personal API Key],Secure API token for automated reporting
+
+5-MINUTE WEEKLY EXECUTIVE MANAGEMENT ROUTINE,,,
+Done?,Step Description,Target Resource,Operational Checklist
+FALSE,1. Review Lead Emails,soulmediagroup.info@gmail.com,Check incoming Web3Forms lead submissions & quote packages
+FALSE,2. Inspect PostHog Funnel,https://us.posthog.com/project/533998/dashboard/1929751,Check weekly conversion rate from site visits to transmitted scopes
+FALSE,3. Watch Converted Replays,https://us.posthog.com/project/533998/replay,Watch 1-click video replays of leads who converted on site
+FALSE,4. Check Emergency Backup Vault,Browser Console (localStorage),Verify no offline leads are pending in client localStorage backup
