@@ -85,7 +85,9 @@ export const Contact: React.FC = () => {
                 </div>
                 <div>
                   <span className="text-xs font-black uppercase text-[#D83685] block">Direct Executive Email</span>
-                  <span className="text-base font-black text-[#1A1626]">contact@soulmediagroup.com</span>
+                  <a href="mailto:soulmediagroup.info@gmail.com" className="text-base font-black text-[#1A1626] hover:text-[#7C3AED] transition-colors">
+                    soulmediagroup.info@gmail.com
+                  </a>
                 </div>
               </div>
 
