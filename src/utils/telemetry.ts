@@ -49,7 +49,9 @@ export const initTelemetry = (posthogKey?: string, ga4Id?: string): void => {
           persistence: 'memory', // Cookie-less (No consent banner needed!)
           disable_session_recording: false,
         });
-        console.log('[Soul Telemetry] PostHog initialized via Netlify Proxy with key:', targetPostHogKey);
+          if (typeof window !== 'undefined' && (window as any).SOUL_DEBUG === true) {
+            console.log('[Soul Telemetry] PostHog initialized via Netlify Proxy with key:', targetPostHogKey);
+          }
       }
     };
     document.head.appendChild(script);
@@ -87,7 +89,9 @@ export const trackEvent = (eventName: string, payload: TelemetryEventPayload = {
     timestamp,
   };
 
-  console.log(`[Soul Telemetry Event] ${eventName}:`, enrichedPayload);
+  if (typeof window !== 'undefined' && (window as any).SOUL_DEBUG === true) {
+    console.log(`[Soul Telemetry Event] ${eventName}:`, enrichedPayload);
+  }
 
   // PostHog Event Dispatch
   if (typeof window !== 'undefined' && window.posthog) {

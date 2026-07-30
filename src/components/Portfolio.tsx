@@ -13,7 +13,7 @@ interface CaseStudy {
   category: string;
   image: string;
   client: string;
-  impact: string;
+  badge: string;
   status: string;
   deliverables: string;
   techStack: string;
@@ -35,31 +35,31 @@ export const Portfolio: React.FC = () => {
       category: 'Filming & Commercials',
       image: 'https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?auto=format&fit=crop&q=80&w=1200',
       client: 'Aura Apparel',
-      impact: '1.4M Organic Views',
-      status: 'Active Production Campaign',
-      deliverables: '4K Commercial Master, 12 Social Cutdowns, Motion Grading',
+      badge: '4K Cinema Master',
+      status: 'Active Production Spec',
+      deliverables: '4K Commercial Master, 12 Social Cutdowns, Motion Color',
       techStack: 'Red V-Raptor 8K • Anamorphic Lenses • DaVinci Color',
       summary: 'High-energy lifestyle fashion commercial shot on location. Engineered for high-conversion social ad campaigns.',
     },
     {
       id: 'velvet-horizon',
-      title: 'Velvet Horizon Rebrand',
+      title: 'Velvet Horizon Identity',
       category: 'Brand Strategy',
       image: velvetHorizonImg,
       client: 'Velvet Horizon',
-      impact: '3.2x Engagement Surge',
-      status: 'Client Confidential Showcase',
+      badge: 'Brand Motion Spec',
+      status: 'Executive Identity Showcase',
       deliverables: '3D Motion Identity, Brand Strategy System, Digital Assets',
       techStack: 'Cinema 4D • Octane Render • After Effects',
       summary: 'Complete brand identity refresh and motion graphics package elevating market positioning across digital channels.',
     },
     {
       id: 'solstice-web3d',
-      title: 'Solstice 3D Canvas Experience',
+      title: 'Solstice 3D Canvas',
       category: '3D Web & Renders',
       image: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&q=80&w=1200',
       client: 'Solstice Tech',
-      impact: '88% Increased Time-on-Site',
+      badge: 'WebGL 3D Engine',
       status: 'Interactive Web Experience',
       deliverables: 'WebGL 3D Product Configurator, Custom Shader Effects',
       techStack: 'Three.js • React Three Fiber • Vite • GLSL',
@@ -67,12 +67,12 @@ export const Portfolio: React.FC = () => {
     },
     {
       id: 'apex-capital',
-      title: 'Executive Reel Series',
+      title: 'Executive Leadership Reels',
       category: 'Short-Form Reels',
       image: apexCapitalImg,
       client: 'Apex Capital',
-      impact: '420K Reach in 14 Days',
-      status: 'High-Volume Retainer',
+      badge: 'Retainer Reel Series',
+      status: 'Executive Content Engine',
       deliverables: '16 Vertical Reels / Mo, Sound Design, Subtitle Motion',
       techStack: 'Sony FX6 • Wireless Mic Array • Premiere Pro',
       summary: 'Monthly retainer production delivering high-impact executive leadership reels optimized for TikTok, Reels, & Shorts.',
@@ -126,7 +126,7 @@ export const Portfolio: React.FC = () => {
           </motion.h2>
 
           <p className="text-[#4A4259] text-lg font-medium">
-            Explore recent commercial productions, motion design, and high-converting brand campaigns. Click any card to flip and inspect production details.
+            Explore recent commercial productions, motion design, and brand campaigns. Click any card to flip and inspect production details.
           </p>
         </div>
 
@@ -185,21 +185,21 @@ export const Portfolio: React.FC = () => {
                           <span className="px-3.5 py-1.5 rounded-full bg-[#FFF5F8]/90 border border-[#FFB6D9] text-xs font-black text-[#D83685]">
                             {study.category}
                           </span>
-                          <span className="px-3.5 py-1.5 rounded-full bg-[#059669] text-white text-xs font-black">
-                            {study.impact}
+                          <span className="px-3.5 py-1.5 rounded-full bg-[#1A1626] text-white border border-[#FFB6D9]/40 text-xs font-black">
+                            {study.badge}
                           </span>
                         </div>
 
                         {/* Click to Flip Badge Overlay */}
                         <div className="absolute bottom-4 right-4 z-10">
-                          <div className="px-4 py-2 rounded-full bg-[#1A1626]/80 backdrop-blur-md border border-white/20 text-white text-xs font-bold flex items-center gap-2 group-hover:scale-105 transition-transform shadow-lg">
+                          <div className="px-4 py-2 rounded-full bg-[#1A1626]/85 backdrop-blur-md border border-white/30 text-white text-xs font-bold flex items-center gap-2 group-hover:scale-105 transition-transform shadow-lg">
                             <RotateCw className="w-3.5 h-3.5 text-[#FF94C7] animate-spin-slow" />
                             <span>Click to Inspect Specs</span>
                           </div>
                         </div>
                       </div>
 
-                      <div className="p-6 flex-grow flex flex-col justify-between bg-white/90">
+                      <div className="p-6 flex-grow flex flex-col justify-between bg-white/95">
                         <div>
                           <span className="text-xs font-extrabold text-[#D83685] uppercase tracking-wider block mb-1">
                             Client: {study.client}
@@ -210,27 +210,28 @@ export const Portfolio: React.FC = () => {
                         </div>
 
                         <div className="pt-3 flex items-center justify-between border-t border-gray-100">
-                          <span className="text-xs font-bold text-gray-500 flex items-center gap-1.5">
-                            <ShieldCheck className="w-4 h-4 text-[#059669]" />
+                          <span className="text-xs font-bold text-gray-600 flex items-center gap-1.5">
+                            <ShieldCheck className="w-4 h-4 text-[#D83685]" />
                             <span>{study.status}</span>
                           </span>
                           <span className="text-xs font-black text-[#D83685] flex items-center gap-1">
-                            <span>View Breakdown</span>
+                            <span>Inspect Specs</span>
                             <ArrowRight className="w-3.5 h-3.5" />
                           </span>
                         </div>
                       </div>
                     </div>
 
-                    {/* BACK OF CARD (FLIPPED 3D STATE) */}
-                    <div className="absolute inset-0 backface-hidden rotate-y-180 glass-card rounded-3xl p-8 border border-[#2D124D]/30 shadow-2xl bg-gradient-to-br from-[#1A1626] via-[#2D124D] to-[#0D0B14] text-white flex flex-col justify-between">
-                      {/* Background Ambient Glow */}
-                      <div className="absolute -top-24 -right-24 w-64 h-64 rounded-full bg-[#FF94C7]/20 blur-3xl pointer-events-none" />
+                    {/* BACK OF CARD (FLIPPED 3D STATE) — HIGH CONTRAST DARK EXECUTIVE GLASS THEME */}
+                    <div className="absolute inset-0 backface-hidden rotate-y-180 rounded-3xl p-7 border-2 border-[#FFB6D9]/60 shadow-2xl bg-[#1A1626] text-white flex flex-col justify-between overflow-hidden">
+                      {/* Ambient Decorative Light Orbs */}
+                      <div className="absolute -top-20 -right-20 w-56 h-56 rounded-full bg-[#D83685]/30 blur-2xl pointer-events-none" />
+                      <div className="absolute -bottom-20 -left-20 w-56 h-56 rounded-full bg-[#7C3AED]/25 blur-2xl pointer-events-none" />
 
                       <div className="relative z-10 space-y-4">
                         <div className="flex items-center justify-between">
-                          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#FF94C7]/20 border border-[#FF94C7]/40 text-[11px] font-black text-[#FF94C7] uppercase tracking-wider">
-                            <Sparkles className="w-3 h-3" />
+                          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#D83685]/30 border border-[#FFB6D9]/50 text-xs font-black text-[#FFB6D9] uppercase tracking-wider">
+                            <Sparkles className="w-3.5 h-3.5 text-[#FFB6D9]" />
                             <span>{study.status}</span>
                           </span>
 
@@ -239,39 +240,39 @@ export const Portfolio: React.FC = () => {
                               e.stopPropagation();
                               toggleFlip(study.id, study.title, study.client);
                             }}
-                            className="px-3 py-1 rounded-full bg-white/10 hover:bg-white/20 text-xs font-bold text-gray-300 flex items-center gap-1 transition-all cursor-pointer"
+                            className="px-3.5 py-1.5 rounded-full bg-white/15 hover:bg-white/25 text-xs font-black text-white flex items-center gap-1.5 transition-all cursor-pointer border border-white/20"
                           >
-                            <RotateCw className="w-3 h-3" />
+                            <RotateCw className="w-3.5 h-3.5 text-[#FFB6D9]" />
                             <span>Flip Front</span>
                           </button>
                         </div>
 
                         <div>
-                          <span className="text-xs font-extrabold text-[#FF94C7] uppercase tracking-widest block mb-1">
+                          <span className="text-xs font-extrabold text-[#FFB6D9] uppercase tracking-widest block mb-1">
                             Client: {study.client}
                           </span>
-                          <h3 className="text-2xl font-black text-white">{study.title}</h3>
+                          <h3 className="text-2xl font-black text-white tracking-tight">{study.title}</h3>
                         </div>
 
-                        <p className="text-xs font-medium text-gray-300 leading-relaxed">
+                        <p className="text-sm font-medium text-gray-200 leading-relaxed">
                           {study.summary}
                         </p>
 
-                        <div className="p-4 rounded-2xl bg-white/5 border border-white/10 space-y-2 text-xs">
-                          <div className="flex items-start gap-2 text-gray-200">
-                            <CheckCircle2 className="w-4 h-4 text-[#99FFE0] shrink-0 mt-0.5" />
-                            <span><strong>Deliverables</strong>: {study.deliverables}</span>
+                        <div className="p-4 rounded-2xl bg-white/10 border border-white/20 space-y-2 text-xs">
+                          <div className="flex items-start gap-2.5 text-white font-medium">
+                            <CheckCircle2 className="w-4 h-4 text-[#34D399] shrink-0 mt-0.5" />
+                            <span><strong className="text-[#FFB6D9]">Deliverables:</strong> {study.deliverables}</span>
                           </div>
-                          <div className="flex items-start gap-2 text-gray-200">
-                            <CheckCircle2 className="w-4 h-4 text-[#FF94C7] shrink-0 mt-0.5" />
-                            <span><strong>Tech & Directing</strong>: {study.techStack}</span>
+                          <div className="flex items-start gap-2.5 text-white font-medium">
+                            <CheckCircle2 className="w-4 h-4 text-[#FFB6D9] shrink-0 mt-0.5" />
+                            <span><strong className="text-[#FFB6D9]">Tech & Directing:</strong> {study.techStack}</span>
                           </div>
                         </div>
                       </div>
 
-                      <div className="relative z-10 pt-4 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-3">
-                        <span className="text-xs font-black text-[#99FFE0]">
-                          Achieved: {study.impact}
+                      <div className="relative z-10 pt-4 border-t border-white/15 flex flex-col sm:flex-row items-center justify-between gap-3">
+                        <span className="text-xs font-black text-[#34D399] bg-[#34D399]/15 px-3 py-1 rounded-full border border-[#34D399]/30">
+                          {study.badge}
                         </span>
 
                         <button
@@ -279,10 +280,10 @@ export const Portfolio: React.FC = () => {
                             e.stopPropagation();
                             handleBookCall(study);
                           }}
-                          className="w-full sm:w-auto px-5 py-2.5 rounded-full bg-gradient-to-r from-[#FF94C7] to-[#D4B8FF] text-[#1A1626] font-black text-xs inline-flex items-center justify-center gap-2 hover:scale-105 transition-transform shadow-lg cursor-pointer"
+                          className="w-full sm:w-auto px-5 py-2.5 rounded-full bg-gradient-to-r from-[#D83685] via-[#E5D4FF] to-[#C2FFE5] text-[#1A1626] font-black text-xs inline-flex items-center justify-center gap-2 hover:scale-105 transition-transform shadow-xl cursor-pointer"
                         >
-                          <Calendar className="w-3.5 h-3.5" />
-                          <span>Schedule Similar Project Call</span>
+                          <Calendar className="w-4 h-4" />
+                          <span>Schedule Strategy Call</span>
                         </button>
                       </div>
                     </div>

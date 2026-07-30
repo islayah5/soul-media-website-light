@@ -155,11 +155,15 @@ export const sendLeadPayloadBackground = async (
 
     if (response.ok) {
       const result = await response.json();
-      console.log(`[Soul Lead Engine - Light] Web3Forms lead dispatch successful:`, result);
+      if (typeof window !== 'undefined' && (window as any).SOUL_DEBUG === true) {
+        console.log(`[Soul Lead Engine - Light] Web3Forms lead dispatch successful:`, result);
+      }
       return true;
     }
   } catch (err) {
-    console.warn('[Soul Lead Engine - Light] Web3Forms API dispatch warning:', err);
+    if (typeof window !== 'undefined' && (window as any).SOUL_DEBUG === true) {
+      console.warn('[Soul Lead Engine - Light] Web3Forms API dispatch warning:', err);
+    }
   }
 
   // 4. Secondary Channel: FormSubmit Fallback
@@ -175,7 +179,9 @@ export const sendLeadPayloadBackground = async (
     });
 
     if (response.ok) {
-      console.log(`[Soul Lead Engine - Light] FormSubmit fallback successful`);
+      if (typeof window !== 'undefined' && (window as any).SOUL_DEBUG === true) {
+        console.log(`[Soul Lead Engine - Light] FormSubmit fallback successful`);
+      }
       return true;
     }
   } catch (err) {

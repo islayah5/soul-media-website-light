@@ -29,6 +29,7 @@ export const CustomCursor: React.FC = () => {
         target.closest('a') ||
         target.closest('input') ||
         target.closest('textarea') ||
+        target.closest('.cursor-pointer') ||
         target.classList.contains('interactive')
       ) {
         setIsHovered(true);
@@ -50,7 +51,7 @@ export const CustomCursor: React.FC = () => {
       ringPos.current.y += (mousePos.current.y - ringPos.current.y) * 0.28;
 
       if (cursorDotRef.current) {
-        cursorDotRef.current.style.transform = `translate3d(${mousePos.current.x - 4}px, ${mousePos.current.y - 4}px, 0)`;
+        cursorDotRef.current.style.transform = `translate3d(${mousePos.current.x - 5}px, ${mousePos.current.y - 5}px, 0)`;
       }
 
       if (cursorRingRef.current) {
@@ -75,28 +76,31 @@ export const CustomCursor: React.FC = () => {
 
   return (
     <>
-      {/* Outer Follower Ring - Hardware Accelerated */}
+      {/* Outer Follower Ring - High Contrast Electric Pink Halo with Ambient Blur */}
       <div
         ref={cursorRingRef}
-        className="fixed top-0 left-0 pointer-events-none z-[9999999] hidden md:block will-change-transform"
+        className="fixed top-0 left-0 pointer-events-none z-[9999999] hidden md:block will-change-transform mix-blend-exclusion"
         style={{ transform: 'translate3d(-100px, -100px, 0)' }}
       >
         <div
-          className={`rounded-full border transition-all duration-200 ${
+          className={`rounded-full transition-all duration-200 ${
             isHovered
-              ? 'w-12 h-12 bg-[#2D124D]/25 backdrop-blur-[2px] border-[#2D124D] scale-125'
-              : 'w-8 h-8 bg-transparent border-[#2D124D]/60 scale-100'
+              ? 'w-12 h-12 bg-[#FF94C7]/40 border-2 border-[#FFF5F8] scale-125 shadow-[0_0_20px_rgba(255,148,199,0.9)]'
+              : 'w-8 h-8 bg-[#D83685]/20 border-2 border-[#D83685] scale-100 shadow-[0_0_12px_rgba(216,54,133,0.7)]'
           }`}
         />
       </div>
 
-      {/* Inner Precision Dot - Hardware Accelerated */}
+      {/* Inner Precision Core Dot - Dual Layer High Contrast Luminance */}
       <div
         ref={cursorDotRef}
-        className="fixed top-0 left-0 pointer-events-none z-[10000000] hidden md:block will-change-transform"
+        className="fixed top-0 left-0 pointer-events-none z-[10000000] hidden md:block will-change-transform mix-blend-difference"
         style={{ transform: 'translate3d(-100px, -100px, 0)' }}
       >
-        <div className="w-2 h-2 bg-[#2D124D] rounded-full shadow-[0_0_10px_rgba(45,18,77,0.7)]" />
+        <div className="relative w-2.5 h-2.5">
+          {/* Inner Core */}
+          <div className="w-full h-full bg-[#FFFFFF] rounded-full shadow-[0_0_10px_#FFFFFF,_0_0_18px_#D83685]" />
+        </div>
       </div>
     </>
   );

@@ -24,5 +24,17 @@ export default defineConfig({
   server: {
     port: 3000,
     open: true,
+    proxy: {
+      '/ingest/static': {
+        target: 'https://us-assets.i.posthog.com',
+        changeOrigin: true,
+        rewrite: (p) => p.replace(/^\/ingest\/static/, '/static'),
+      },
+      '/ingest': {
+        target: 'https://us.i.posthog.com',
+        changeOrigin: true,
+        rewrite: (p) => p.replace(/^\/ingest/, ''),
+      },
+    },
   },
 });
